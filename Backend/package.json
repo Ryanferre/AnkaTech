@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "dependencies": {
+    "fastify": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.29",
+    "prisma": "^6.8.2"
+  }
+}

@@ -1,0 +1,5 @@
+[
+  { "id": 1, "nome": "Ação XYZ", "tipo": "Ação", "valor": 100.5 },
+  { "id": 2, "nome": "Fundo ABC", "tipo": "Fundo de Investimento", "valor": 250.0 },
+  { "id": 3, "nome": "Cripto BTC", "tipo": "Criptomoeda", "valor": 70000.0 }
+]
