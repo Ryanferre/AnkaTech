@@ -3,7 +3,7 @@ import fs from 'fs/promises'
 
 const ServeAtivos= Fastify({logger: true})//Servdidor e status de execulcao
 
-ServeAtivos.get("/", async (req, res)=>{
+ServeAtivos.get("/", async (req: any, res)=>{
     const dataItens= (await fs.readFile('./Ativos/Ativos.json')).toString()//acessando os itens e transformando em tipo string
 
     const Resdata= JSON.parse(dataItens)
