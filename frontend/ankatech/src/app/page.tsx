@@ -1,8 +1,9 @@
+import HomePrincipal from "./Home/Home";
 
 export default function Home() {
   return (
-    <div>
-      hellow next
-    </div>
+    <>
+     <HomePrincipal />
+    </>
   );
 }
