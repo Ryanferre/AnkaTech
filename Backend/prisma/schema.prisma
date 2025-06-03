@@ -18,4 +18,23 @@ model user {
   firstname String  @db.VarChar(50)
   lastname  String  @db.VarChar(50)
   email     String  @unique @db.VarChar(100)
+  clientes clienteuser[]
+}
+
+model clienteuser {
+  id        Int    @id @default(autoincrement())
+  nome      String
+  cpf       String @unique
+  telefone  String
+  userId    Int
+  user      user   @relation(fields: [userId], references: [id])
+  ativos ativoscripto[]
+}
+
+model ativoscripto {
+  id          Int         @id @default(autoincrement())
+  ativos      Json
+  valorTotal  Decimal     @db.Decimal(10, 2)
+  clientId    Int
+  cliente     clienteuser @relation(fields: [clientId], references: [id])
 }

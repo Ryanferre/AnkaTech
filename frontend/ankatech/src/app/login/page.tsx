@@ -1,18 +1,25 @@
-'use client'//ustilizacao de hook
-import { useState } from 'react';
+"use client" //utilizacao de hook
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { ValuesHook } from '../costumHook/costHook';
+import { useRouter } from 'next/navigation';
 
 //tipagem de dos dados
 type DataUser= {
-    firstName: string,
-    lastName: string
+    firstname: string,
+    lastname: string
     email: string
 }
 
 export default function LoginUser(){
-    const [dados, setDados] = useState<DataUser>({email: "", firstName: "", lastName: ""})//dados do usuario
+    const [dados, setDados] = useState<DataUser>({firstname: '', lastname: '', email: ''})//dados do usuario
     const [visibeFirstname, setFirstname]= useState('0')//visilidade alert firstName
     const [visibleLastname, setLastname]= useState('0')//visibilidade alert lastname
     const [visibleemail, setemail]= useState('0')//visibilidade alert email
+    const {getstateuser, iconuser}= ValuesHook()
+    const router= useRouter()
+
 
     //validar firstname
     const firstNamefunction= (e: any)=>{
@@ -22,7 +29,7 @@ export default function LoginUser(){
         if(!regexuser.test(nameuser)){
             setFirstname('1')
         }else{
-            setDados(prev => ({ ...prev, firstName: nameuser }))
+            setDados(prev => ({ ...prev, firstname: nameuser }))
             setFirstname('0')
         }
     }
@@ -36,7 +43,7 @@ export default function LoginUser(){
             setLastname('1')
 
         }else{
-            setDados(prev => ({ ...prev, lastName: nameuser }))
+            setDados(prev => ({ ...prev, lastname: nameuser }))
             setLastname('0')
         }
     }
@@ -48,15 +55,34 @@ export default function LoginUser(){
         if(!regexuser.test(emailuser)){
             setemail('1')
         }else{
-            setDados(prev => ({ ...prev, lastName: emailuser }))
+            setDados(prev => ({ ...prev, email: emailuser }))
             setemail('0')
         }
     }
 
     //enviar dados
-    const ConnectServerBd= ()=>{
-        
+    const ConnectServerBd= async ()=>{
+        try {
+            const res = await axios.post('http://localhost:4000/cadastro', dados);
+            if(res.data){
+                getstateuser(true)
+                console.log(res.data.id)
+                Cookies.set('userId', res.data.id.toString(), {
+                expires: 7,
+                path: '/',
+            });
+            }
+        } catch (erro) {
+            console.error('Erro ao cadastrar:', erro);
+        }
     }
+
+    useEffect(()=>{
+        if(iconuser){
+            router.push('/')
+            console.log(iconuser)
+        }
+    }, [iconuser])
 
 
     return(
@@ -86,7 +112,7 @@ export default function LoginUser(){
                         </div>
                     </li>
                 </ul>
-                <button className="bg-black border border-none rounded-[.6rem] px-15 py-2">Send</button>
+                <button className="bg-black border border-none rounded-[.6rem] px-15 py-2" onClick={ConnectServerBd}>Send</button>
             </div>
         </section>
     )
