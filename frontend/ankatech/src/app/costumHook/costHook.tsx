@@ -2,16 +2,19 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface contextProps {
-  iconuser: boolean;
-  getstateuser: (value: boolean) => void;
+  ModalofListuser: string;
+  ModalConfirmDataUser: string,
+  getsHiddenorFlex: (value: string) => void;
+  getsHiddenorFlexDataUser: (value: string) => void
 }
 
 const context= createContext<contextProps | undefined>(undefined)
 
 export function HookState({ children }: { children: ReactNode }){
-    const [iconuser, getstateuser] = useState(false);
+    const [ModalofListuser, getsHiddenorFlex] = useState('hidden');
+    const [ModalConfirmDataUser, getsHiddenorFlexDataUser]= useState('hidden')
     return (
-        <context.Provider value={{ iconuser, getstateuser }}>
+        <context.Provider value={{ ModalofListuser, getsHiddenorFlex, ModalConfirmDataUser, getsHiddenorFlexDataUser }}>
           {children}
         </context.Provider>
     );

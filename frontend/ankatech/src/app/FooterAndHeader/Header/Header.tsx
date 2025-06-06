@@ -36,10 +36,10 @@ export default function Header (){
                    Dashboard
                  </li>
                  <li className={styleLi}>
-                    Clientes
+                    <Link href='/clientes'>Clientes</Link>
                  </li>
                  <li className={styleLi}>
-                    Ativos
+                    <Link href="/ativos">Ativos</Link>
                  </li>
                  <li className={styleLi}>
                     Carteiras

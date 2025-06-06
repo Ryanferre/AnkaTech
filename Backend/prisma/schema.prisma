@@ -34,7 +34,6 @@ model clienteuser {
 model ativoscripto {
   id          Int         @id @default(autoincrement())
   ativos      Json
-  valorTotal  Decimal     @db.Decimal(10, 2)
-  clientId    Int
+  clientId    Int         @unique
   cliente     clienteuser @relation(fields: [clientId], references: [id])
 }
