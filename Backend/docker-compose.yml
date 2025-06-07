@@ -9,7 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: nome_do_banco
       MYSQL_USER: root
-      MYSQL_PASSWORD: R1301Y?0a
+      MYSQL_PASSWORD: R0113Ya86
     ports:
       - "3307:3307"
     volumes:

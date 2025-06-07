@@ -7,27 +7,37 @@ await ApiBdUser.register(cors, {
     origin: "*"
 });
 //cadastrar o uruario no banco dados
-ApiBdUser.post('/cadastro', async (req, reply) => {
+ApiBdUser.post('/cadastro', async (req, res) => {
     const { firstname, lastname, email } = req.body;
-    const Createuser = await prisma.user.create({ data: { firstname, lastname, email } });
-    if (Createuser) {
-        console.log(Createuser.id);
+    try {
+        const Createuser = await prisma.user.create({ data: { firstname, lastname, email } });
+        res.send(Createuser);
     }
-    else {
-        console.log('erro de conexao');
+    catch (error) {
+        res.send(error);
     }
-    reply.send(Createuser);
 });
 //enviar os dados do usuario para o front
 ApiBdUser.get("/user/:id", async (req, res) => {
     const { id } = req.params;
-    const userId = Number(id);
-    try {
-        const dataUser = await prisma.user.findUnique({ where: { id: userId } });
-        res.send(dataUser);
+    if (!isNaN(Number(id))) {
+        const userId = Number(id);
+        try {
+            const dataUser = await prisma.user.findUnique({ where: { id: userId } });
+            res.send(dataUser);
+        }
+        catch (error) {
+            res.send(error);
+        }
     }
-    catch (error) {
-        res.send(error);
+    else {
+        try {
+            const dataUser = await prisma.user.findUnique({ where: { email: id } });
+            res.send(dataUser);
+        }
+        catch (error) {
+            res.send(error);
+        }
     }
 });
 //cadastrar cliente

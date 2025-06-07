@@ -26,10 +26,6 @@ export default function UserInformation(){
 
         startgetdatauser()
     }, [])
-
-    useEffect(()=>{
-        console.log(resdatauser)
-    }, [resdatauser])
     return(
         <section className="flex flex-col py-28 items-center">
             <div className="w-96 h-80 flex flex-col items-center justify-center gap-10 border border-[#5d5d5d] rounded-2xl">

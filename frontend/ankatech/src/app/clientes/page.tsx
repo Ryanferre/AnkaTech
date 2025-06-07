@@ -37,7 +37,7 @@ export default function clientList(){
                     <h1 className="text-[#5d5d5d] text-2xl">Clientes</h1>
                     <Link href="/CadasCliente" className="bg-black border border-none rounded-[.6rem] px-15 py-2">Adicionar cliente</Link>
                 </div>
-                <ul className="flex flex-col w-full h-[20rem] border-l border-b rounded-bl-2xl border-black shadow-md gap-3">
+                <ul className="flex flex-col w-full h-[20rem] px-4 border-l border-b rounded-bl-2xl border-black shadow-md gap-3">
                     {userClients.length !== 0 ? userClients.map((dataclient)=>(
                        <Link href={`/SelectAtivos?id=${dataclient.id}&name=${dataclient.nome}`} key={dataclient.id}>
                           <li className="grid grid-cols-3 items-center w-full px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]">

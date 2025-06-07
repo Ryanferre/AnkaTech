@@ -62,7 +62,6 @@ export default function EditUser(){
         const Phone= inforUser?.telefone
         setModCpf(cpf)
         setModPhone(Phone)
-        console.log(inforUser)
     }, [inforUser])
 
     //Ativa o modal para confirmar as informacoes

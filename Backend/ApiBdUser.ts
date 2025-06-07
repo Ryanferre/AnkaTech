@@ -11,33 +11,43 @@ await ApiBdUser.register(cors, {
 })
 
 //cadastrar o uruario no banco dados
-ApiBdUser.post('/cadastro', async(req: any, reply: any)=>{
+ApiBdUser.post('/cadastro', async(req: any, res: any)=>{
     const {firstname, lastname, email}= req.body as { firstname: string, lastname: string, email: string}
 
-    const Createuser= await prisma.user.create({data: {firstname, lastname, email}})
-
-    if(Createuser){
-        console.log(Createuser.id)
-    }else{
-        console.log('erro de conexao')
+    try {
+        const Createuser= await prisma.user.create({data: {firstname, lastname, email}})
+        res.send(Createuser)
+    } catch (error) {
+        res.send(error)
     }
-
-    reply.send(Createuser)
 })
 
 interface Params {
   id: string
 }
+interface Body {
+  firstname: string;
+  email: string;
+}
 //enviar os dados do usuario para o front
-ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params }>, res)=>{
+ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params, body: Body }>, res)=>{
     const {id}= req.params
 
-    const userId= Number(id)
-    try {
-        const dataUser= await prisma.user.findUnique({where: { id: userId }})
-        res.send(dataUser)
-    } catch (error) {
-        res.send(error)
+    if(!isNaN(Number(id))){
+        const userId= Number(id)
+        try {
+           const dataUser= await prisma.user.findUnique({where: { id: userId }})
+           res.send(dataUser)
+        } catch (error) {
+            res.send(error)
+        } 
+    }else{
+        try {
+           const dataUser= await prisma.user.findUnique({where: { email: id }})
+           res.send(dataUser)
+        } catch (error) {
+            res.send(error)
+        }
     }
 })
 
