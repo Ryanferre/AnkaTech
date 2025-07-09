@@ -15,7 +15,7 @@ const context= createContext<contextProps | undefined>(undefined)
 export function HookState({ children }: { children: ReactNode }){
     const [ModalofListuser, getsHiddenorFlex] = useState('hidden');
     const [ModalConfirmDataUser, getsHiddenorFlexDataUser]= useState('hidden')
-    const [ModalVisiblemenu, getVisibleMenu]= useState('-mt-90')
+    const [ModalVisiblemenu, getVisibleMenu]= useState('-mt-40')
     return (
         <context.Provider value={{ ModalofListuser, getsHiddenorFlex, ModalConfirmDataUser, getsHiddenorFlexDataUser, ModalVisiblemenu, getVisibleMenu }}>
           {children}

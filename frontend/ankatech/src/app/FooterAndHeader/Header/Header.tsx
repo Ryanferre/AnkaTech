@@ -36,7 +36,9 @@ export default function Header (){
         }, [])
 
     return(
-        <section className="lg:px-7 sm:px-2 py-5 flex flex-row justify-between items-center">
+      <>
+       <Menu />
+        <section className="px-5 lg:px-7 py-5 flex flex-row justify-between items-center">
             <Link href='/'>
                <img className="w-9 " src="https://i.postimg.cc/fb4wDq0W/grafico-de-crescimento-3.png" />
             </Link>
@@ -66,14 +68,14 @@ export default function Header (){
             <div>
                <Link className={`${visibleUser}`} href={"/userInfor"}><FaUser size={25} color='#5d5d5d'/></Link>
                <span className={`${visibleIconLogin} flex-row items-center gap-2`}>
-                  <button onClick={()=> getVisibleMenu('mt-39')} className="bg-black border border-none rounded-[.6rem] px-4 py-[.2em]" style={{display: width < 768 ? 'flex' : 'none'}}>Menu</button>
+                  <button onClick={()=> getVisibleMenu('mt-0')} className="bg-black border border-none rounded-[.6rem] px-4 py-[.2em]" style={{display: width < 768 ? 'flex' : 'none'}}>Menu</button>
                   <div className='flex flex-row'>
-                     <Link href={"/login"}><FaUser size={25} color='#5d5d5d'/></Link>
+                     <Link href={"/login"}><FaUser size={24} color='#5d5d5d'/></Link>
                      <p className='text-[#5d5d5d]'>!</p>
                   </div>
                </span>
-            </div>
-            <Menu /> 
+            </div> 
         </section>
+        </>
     )
 }
