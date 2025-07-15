@@ -31,8 +31,8 @@ export default function clientList(){
         console.log(userClients)
     }, [userClients])
     return(
-        <section className="flex flex-col py-11 items-center px-7">
-            <div className="w-full h-[35rem] flex flex-col items-center px-7 py-8 gap-17 border border-[#5d5d5d] rounded-2xl">
+        <section className="flex flex-col py-11 pt-20 lg:pt-0 items-center px-7">
+            <div className="w-full h-[35rem] -ml-3 lex flex-col items-center px-7 py-8 gap-17 border border-[#5d5d5d] rounded-2xl">
                 <div className="flex flex-row w-full items-center justify-between py-2 border-b border-[#5d5d5d]">
                     <h1 className="text-[#5d5d5d] text-2xl">Clientes</h1>
                     <Link href="/CadasCliente" className="bg-black border border-none rounded-[.6rem] px-15 py-2">Adicionar cliente</Link>

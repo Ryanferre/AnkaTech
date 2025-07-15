@@ -183,6 +183,7 @@ export default function LoginUser(){
                 </ul>
                 <button className="bg-black border border-none rounded-[.6rem] px-15 py-2" onClick={login}>Send</button>
             </div>
+            <p className="text-[#5d5d5d]">our</p>
             <button className="bg-black border border-none rounded-[.6rem] px-15 py-2" onClick={LaterInfor}>{alter}</button>
         </section>
     )

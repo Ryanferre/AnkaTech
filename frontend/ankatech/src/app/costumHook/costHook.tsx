@@ -5,7 +5,9 @@ interface contextProps {
   ModalofListuser: string;
   ModalConfirmDataUser: string,
   ModalVisiblemenu: string,
+  MensageInfor: string //armazena a mensagem que apresentando falha (ou sucesso de login) e tentativa de cadastro de usuario sem altenticação
   getVisibleMenu: (value: string) => void,
+  Getmensage: (value: string) => void,
   getsHiddenorFlex: (value: string) => void;
   getsHiddenorFlexDataUser: (value: string) => void
 }
@@ -16,8 +18,9 @@ export function HookState({ children }: { children: ReactNode }){
     const [ModalofListuser, getsHiddenorFlex] = useState('hidden');
     const [ModalConfirmDataUser, getsHiddenorFlexDataUser]= useState('hidden')
     const [ModalVisiblemenu, getVisibleMenu]= useState('-mt-40')
+    const [MensageInfor, Getmensage]= useState('')
     return (
-        <context.Provider value={{ ModalofListuser, getsHiddenorFlex, ModalConfirmDataUser, getsHiddenorFlexDataUser, ModalVisiblemenu, getVisibleMenu }}>
+        <context.Provider value={{ ModalofListuser, getsHiddenorFlex, ModalConfirmDataUser, getsHiddenorFlexDataUser, ModalVisiblemenu, getVisibleMenu, MensageInfor, Getmensage }}>
           {children}
         </context.Provider>
     );
