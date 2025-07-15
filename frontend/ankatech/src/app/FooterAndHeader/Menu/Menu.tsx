@@ -7,8 +7,8 @@ export default function Menu(){
     const {ModalVisiblemenu, getVisibleMenu}= ValuesHook()
 
     return(
-        <nav className={`${ModalVisiblemenu} py-3 absolute transition-all duration-[3000ms] bg-black/50 w-full flex flex-col justify-between gap-5 py-0 px-5`}>
-            <button onClick={()=> getVisibleMenu('-mt-40')} className="bg-white border ml-100 mt-[.7rem] border-none text-black rounded-[.6rem] px-8 py-[.2em] h-max w-max">X</button>
+        <nav className={`${ModalVisiblemenu} py-3 absolute transition-all duration-[3000ms] w-full flex flex-col justify-between gap-7 py-0 px-5`}>
+            <button onClick={()=> getVisibleMenu('-mt-40')} className="bg-white border border-[#5d5d5d] ml-[24.9em] mt-[.7rem] text-black rounded-[.6rem] px-8 py-[.2em] h-max w-max">X</button>
             <ul className="flex w-max flex-row bg-white py-3 px-2 gap-2 border rounded-[.5em] border-[#5d5d5d]">
                 <li className={styleLi}>
                     Dashboard

@@ -6,12 +6,9 @@ services:
     container_name: mysql_container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: nome_do_banco
-      MYSQL_USER: root
-      MYSQL_PASSWORD: R0113Ya86
+      MYSQL_ROOT_PASSWORD: 1234567
     ports:
-      - "3307:3307"
+      - "3307:3306"  # <- Externa:Interna
     volumes:
       - mysql_data:/var/lib/mysql
 

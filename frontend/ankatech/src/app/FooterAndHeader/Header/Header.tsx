@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Menu from '../Menu/Menu';
 import { ValuesHook } from '@/app/costumHook/costHook';
+import Mensage from './MensageHeader/Mensage';
 
 export default function Header (){
     const styleLi= 'text-[#5d5d5d] lg:text-1 sm:text-1'
@@ -37,6 +38,7 @@ export default function Header (){
 
     return(
       <>
+      <Mensage />
        <Menu />
         <section className="px-5 lg:px-7 py-5 flex flex-row justify-between items-center">
             <Link href='/'>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react"
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { ValuesHook } from "../costumHook/costHook";
 
 type datauser={
     nome: string,
@@ -16,6 +17,7 @@ export default function clientcadres(){
     const [visibleCpf, setCpf]= useState('0')//visibilidade alert Cpf
     const [visibleTelefone, setTelefone]= useState('0')//visibilidade alert Telefone
     const userIdcookie = Cookies.get('userId')//resgata o id do cookie
+    const {Getmensage, MensageInfor}= ValuesHook()
 
     //validar name
     const firstNamefunction= (e: any)=>{
@@ -58,11 +60,16 @@ export default function clientcadres(){
 
     //enviar dados
     const ConnectServerBd= async ()=>{
+
         try {
             const res = await axios.post('http://localhost:4000/cadressclient', dados);
-            console.log(res.data)
+
+            if(res.data){
+                Getmensage("Cliente cadastrado com sucesso!")
+            }
         } catch (erro) {
             console.error('Erro ao cadastrar:', erro);
+            Getmensage("usuario nao cadastrado!")
         }
     }
 
@@ -74,29 +81,29 @@ export default function clientcadres(){
     }, [dados.nome, dados.cpf, dados.telefone])
 
     return(
-        <section className="flex flex-col py-11 items-center px-7">
+        <section className="flex flex-col py-11 pt-20 lg:pt-0 items-center px-7">
             <div className="w-full h-80 flex flex-col justify-center gap-10 px-10 border border-[#5d5d5d] rounded-2xl">
                 <p className="text-[#5d5d5d]">ATENCAO: Adicione os dados do cliente conforme presente no documento original</p>
-                <ul className="grid grid-cols-2 w-[30rem]">
+                <ul className="grid grid-cols-2 w-80 lg:w-[30rem]">
                     <li className="w-max">
                         <p className="text-[#5d5d5d]">Name</p>
                     </li>
                     <li>
-                        <input placeholder="Name" onChange={firstNamefunction} className="focus:outline-none border-b-1 w-90 border-[#5d5d5d] text-[#5d5d5d]" type="text" />
+                        <input placeholder="Name" onChange={firstNamefunction} className="focus:outline-none border-b-1 w-full lg:w-90 border-[#5d5d5d] text-[#5d5d5d]" type="text" />
                         <p className={`opacity-${visibeName} text-[.8rem] text-[#969696] h-[.9rem]`}>Nome invalido</p>
                     </li>
                     <li className="w-max">
                         <p className="text-[#5d5d5d]">cpf</p>
                     </li>
                     <li>
-                        <input placeholder="Cpf" onChange={cpffuction} className="focus:outline-none border-b-1 w-90 border-[#5d5d5d] text-[#5d5d5d]" type="text" />
+                        <input placeholder="Cpf" onChange={cpffuction} className="focus:outline-none border-b-1 w-full lg:w-90 border-[#5d5d5d] text-[#5d5d5d]" type="text" />
                         <p className={`opacity-${visibleCpf} text-[.8rem] text-[#969696] h-[.9rem]`}>Cpf invalido</p>
                     </li>
                     <li className="w-max">
                         <p className="text-[#5d5d5d]">Telefone</p>
                     </li>
                     <li>
-                        <input placeholder="Telefone" onChange={Telefonefunction} className="focus:outline-none border-b-1 w-90 border-[#5d5d5d] text-[#5d5d5d]" type="text" />
+                        <input placeholder="Telefone" onChange={Telefonefunction} className="focus:outline-none border-b-1 w-full lg:w-90 border-[#5d5d5d] text-[#5d5d5d]" type="text" />
                         <p className={`opacity-${visibleTelefone} text-[.8rem] text-[#969696] h-[.9rem]`}>Telefone invalido</p>
                     </li>
                 </ul>
