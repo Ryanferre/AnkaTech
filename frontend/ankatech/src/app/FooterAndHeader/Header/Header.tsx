@@ -61,10 +61,10 @@ export default function Header (){
                  </li>
                </ul>
             </nav>
-            <div>
+            <div className='flex flex-row gap-3'>
+               <button onClick={()=> getVisibleMenu('mt-0')} className="bg-black flex lg:hidden border border-none rounded-[.6rem] px-4 py-[.2em]">Menu</button>
                <Link className={`${visibleUser}`} href={"/userInfor"}><FaUser size={25} color='#5d5d5d'/></Link>
                <span className={`${visibleIconLogin} flex-row items-center gap-2`}>
-                  <button onClick={()=> getVisibleMenu('mt-0')} className="bg-black flex lg:hidden border border-none rounded-[.6rem] px-4 py-[.2em]">Menu</button>
                   <div className='flex flex-row'>
                      <Link href={"/login"}><FaUser size={24} color='#5d5d5d'/></Link>
                      <p className='text-[#5d5d5d]'>!</p>

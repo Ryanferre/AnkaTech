@@ -46,16 +46,16 @@ export default function ativosAvailable(){
         <section className="flex flex-col py-19 items-center px-7">
             <div className="w-full h-108 overflow-auto flex flex-col items-center justify-around gap-6 py-6 border border-[#5d5d5d] rounded-2xl">
                 <h1 className="text-[#5d5d5d] text-4xl">Ativos</h1>
-                <ul className="flex flex-col h-full items-center w-full px-10 gap-3">
+                <ul className="flex flex-col h-full items-center w-full px-4 lg:px-10 gap-3">
                     {receiveAssets.map((objectReceive)=>(
-                            <li className="grid grid-cols-4 items-center w-full px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]" key={objectReceive.id}>
-                                <p className="text-[#5d5d5d]">{objectReceive.nome}</p>
-                                <p className="text-[#5d5d5d]">{objectReceive.tipo}</p>
+                            <li className="grid grid-cols-4 items-center w-full px-1 lg:px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]" key={objectReceive.id}>
+                                <p className="text-[#5d5d5d] text-[.8rem]">{objectReceive.nome}</p>
+                                <p className="text-[#5d5d5d] text-[.8rem]">{objectReceive.tipo}</p>
                                 <div className="flex flex-row w-max items-center gap-3">
                                     <FaCoins color={"#f7c41f"} />
-                                    <p className="text-[#5d5d5d]">{objectReceive.valor}</p>
+                                    <p className="text-[#5d5d5d] text-[.8rem]">{objectReceive.valor}</p>
                                 </div>
-                                <button onClick={()=> ativoADD(objectReceive.nome, objectReceive.tipo, objectReceive.valor)}><FaPlus color={"#f7c41f"} /></button>
+                                <button className="w-max" onClick={()=> ativoADD(objectReceive.nome, objectReceive.tipo, objectReceive.valor)}><FaPlus color={"#f7c41f"} className="w-max" /></button>
                             </li>
                     ))}
                 </ul>

@@ -93,9 +93,9 @@ export default function HomePrincipal(){
                         </div>
                     </div>
                 </div>
-                <div className="w-130 lg:w-120 px-4 pt-5 h-50 lg:h-[30em] mx-auto">
+                <div className="w-full lg:w-120 px-4 pt-5 h-max lg:h-[30em] mx-auto">
                     <h3 className="text-[#f7c41f] uppercase text-[1.5em]">Clientes</h3>
-                    <ul className="flex flex-col w-full h-full lg:h-[25em] sm:h-full overflow-auto border-l border-b px-4 rounded-bl-2xl border-black shadow-md gap-3">
+                    <ul className="flex flex-col w-full h-40 lg:h-[25em] overflow-auto border-l border-b px-4 rounded-bl-2xl border-black shadow-md gap-3">
                         {userClients.length !== 0 ? userClients.map((dataclient)=>(
                                     <li key={dataclient.id} className="grid grid-cols-3 items-center w-full px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]">
                                         <p className="text-[#5d5d5d]">{dataclient.nome}</p>
