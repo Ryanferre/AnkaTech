@@ -27,14 +27,8 @@ export default function Header (){
     }, [pathname, userId])
    
     //verificar tamanho de tela
-        const [width, setWidth] = useState(window.innerWidth)
         const {getVisibleMenu}= ValuesHook()
     
-        useEffect(() => {
-            const handleResize = () => setWidth(window.innerWidth)
-            window.addEventListener('resize', handleResize)
-            return () => window.removeEventListener('resize', handleResize)
-        }, [])
 
     return(
       <>
@@ -45,7 +39,7 @@ export default function Header (){
                <img className="w-9 " src="https://i.postimg.cc/fb4wDq0W/grafico-de-crescimento-3.png" />
             </Link>
 
-            <nav className="lg:flex md:hidden flex-row items-center gap-5 py-0 px-2" style={{display: width < 768 ? 'none' : 'flex'}}>
+            <nav className="hidden lg:flex flex-row items-center gap-5 py-0 px-2">
                <ul className="flex flex-row py-3 px-2 lg:gap-4 sm:gap-2 border rounded-2xl border-[#5d5d5d]">
                  <li className={styleLi}>
                    Dashboard
@@ -70,7 +64,7 @@ export default function Header (){
             <div>
                <Link className={`${visibleUser}`} href={"/userInfor"}><FaUser size={25} color='#5d5d5d'/></Link>
                <span className={`${visibleIconLogin} flex-row items-center gap-2`}>
-                  <button onClick={()=> getVisibleMenu('mt-0')} className="bg-black border border-none rounded-[.6rem] px-4 py-[.2em]" style={{display: width < 768 ? 'flex' : 'none'}}>Menu</button>
+                  <button onClick={()=> getVisibleMenu('mt-0')} className="bg-black flex lg:hidden border border-none rounded-[.6rem] px-4 py-[.2em]">Menu</button>
                   <div className='flex flex-row'>
                      <Link href={"/login"}><FaUser size={24} color='#5d5d5d'/></Link>
                      <p className='text-[#5d5d5d]'>!</p>

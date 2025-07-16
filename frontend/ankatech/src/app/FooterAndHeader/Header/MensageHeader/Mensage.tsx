@@ -8,11 +8,11 @@ const Mensage= ()=>{
 
 
     useEffect(()=>{
-        if(MensageInfor != ''){
+        if(MensageInfor != null){
             getMensage('flex')
             const timer = setTimeout(() => {
                 getMensage('hidden');
-                Getmensage('')
+                Getmensage(null)
             }, 5000);
 
             return () => clearTimeout(timer);
@@ -21,8 +21,8 @@ const Mensage= ()=>{
     }, [MensageInfor])
     
     return(
-        <div className={`${visibleMensage} absolute mx-42 mt-5 w-max flex-row bg-white py-3 px-2 gap-2 border rounded-[.5em] border-[#5d5d5d]`}>
-            <p className="text-black">{MensageInfor}</p>
+        <div className={`${visibleMensage} absolute w-max flex-row bg-white py-3 px-2 gap-2 border rounded-[.5em] border-[#5d5d5d]`} style={{marginLeft: '24%', marginTop: '17%'}}>
+           {MensageInfor}
         </div>
     )
 }

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { ValuesHook } from '../costumHook/costHook';
 
 //tipagem de dos dados
 type DataUser= {
@@ -24,7 +25,7 @@ export default function LoginUser(){
     const [alter, setAlter]= useState('Login')
     const [flexLogin, setflexLogin]= useState('hidden')
     const [flexLogout, setFlexlogout]= useState('flex')
-
+    const {Getmensage}= ValuesHook()
 
     //validar firstname
     const firstNamefunction= (e: any)=>{
@@ -75,9 +76,12 @@ export default function LoginUser(){
                 Cookies.set('userId', res.data.id.toString(), {
                 path: '/',
             });
+
+            Getmensage([<p className="text-black">Usuario cadastrado com sucesso!</p>])
             }
         } catch (erro) {
             console.error('Erro ao cadastrar:', erro);
+            Getmensage([<p className="text-black">Identificamos um problema.<br/> Por favor, tente mais tarde!</p>])
         }
     }
 
@@ -128,7 +132,9 @@ export default function LoginUser(){
             if(res.data){
                 Cookies.set('userId', res.data.id.toString(), {
                 path: '/',
-            });
+            })
+
+            
             }
         } catch (erro) {
             console.error('Erro ao cadastrar:', erro);
@@ -139,25 +145,25 @@ export default function LoginUser(){
             <div className={`w-96 h-80 ${flexLogout} flex-col items-center justify-center gap-6 border border-[#5d5d5d] rounded-2xl`}>
                 <h1 className="text-[#5d5d5d] text-4xl">welcome</h1>
                 <ul className="flex flex-col gap-3">
-                    <li className="flex flex-row gap-2">
+                    <li className="flex flex-row gap-4 gl:gap-2">
                         <p className="text-[#5d5d5d]">First Name</p>
                         <div>
                             <input onChange={firstNamefunction} placeholder="First Name" className="focus:outline-none border-b-1 border-[#5d5d5d] text-[#5d5d5d]" type="text" />
-                            <p className={`opacity-${visibeFirstname} text-[.8rem] text-[#969696] h-[.9rem]`}>Nome invalido</p>
+                            <p className="text-[.8rem] text-[#969696] h-[.9rem]" style={{opacity: `${visibeFirstname}`}}>Nome invalido</p>
                         </div>
                     </li>
-                    <li className="flex flex-row gap-2">
+                    <li className="flex flex-row gap-4 lg:gap-2">
                         <p className="text-[#5d5d5d]">Last Name</p>
                         <div>
                             <input onChange={lastnamefuction} placeholder="Last Name" className="focus:outline-none border-b-1 border-[#5d5d5d] text-[#5d5d5d]" type="text" />
-                            <p className={`opacity-${visibleLastname} text-[.8rem] text-[#969696] h-[.9rem]`}>Nome invalido</p>
+                            <p className="text-[.8rem] text-[#969696] h-[.9rem]" style={{opacity: `${visibleLastname}`}}>Nome invalido</p>
                         </div>
                     </li>
-                    <li className="flex flex-row gap-2">
+                    <li className="flex flex-row gap-4 lg:gap-2">
                         <p className="text-[#5d5d5d]">Your Email</p>
                         <div>
                             <input onChange={emailfunction} placeholder="Your Email" className="focus:outline-none border-b-1 border-[#5d5d5d] text-[#5d5d5d]" type="text" />
-                            <p className={`opacity-${visibleemail} text-[.8rem] text-[#969696] h-[.9rem]`}>Email invalido</p>
+                            <p className="text-[.8rem] text-[#969696] h-[.9rem]" style={{opacity: `${visibleemail}`}}>Email invalido</p>
                         </div>
                     </li>
                 </ul>
