@@ -53,12 +53,12 @@ ApiBdUser.post("/cadressclient", async (req, res) => {
     }
 });
 //pegar clientes no banco de dados
-ApiBdUser.get("/userclient/:id/:cpf", async (req, res) => {
-    const { id, cpf } = req.params;
+ApiBdUser.get("/userclient/:id/:cpfUser", async (req, res) => {
+    const { id } = req.params;
+    const { cpfUser } = req.params;
     const userId = Number(id);
-    console.log(userId);
     //verificar se o id e igual ao da tabela. Se sim a api entende que e para pegar um cliente em especifico
-    const idUserIsTrueOurFalse = await prisma.clienteuser.findUnique({ where: { id: Number(id), cpf: cpf } });
+    const idUserIsTrueOurFalse = await prisma.clienteuser.findUnique({ where: { id: Number(id) }, });
     if (idUserIsTrueOurFalse != null) {
         res.send(idUserIsTrueOurFalse);
     }

@@ -55,10 +55,8 @@ export default function HomePrincipal(){
     useEffect(()=>{
         const startGetClients= async ()=>{
             try {
-                const GetClientsforUser= await axios.get(`http://localhost:4000/userclient/${userId}/${}`)
-                setClients([GetClientsforUser.data])
-
-                console.log(GetClientsforUser.data)
+                const GetClientsforUser= await axios.get(`http://localhost:4000/userclient/${userId}/${null}`)
+                setClients(GetClientsforUser.data[0])
             } catch (error) {
                 console.warn(error)
             }

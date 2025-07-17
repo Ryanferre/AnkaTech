@@ -24,7 +24,7 @@ ApiBdUser.post('/cadastro', async(req: any, res: any)=>{
 
 interface Params {
   id: string,
-  cpf: string
+  cpfUser: string
 }
 interface Body {
   firstname: string;
@@ -70,15 +70,17 @@ ApiBdUser.post("/cadressclient", async(req, res)=>{
 })
 
 //pegar clientes no banco de dados
-ApiBdUser.get("/userclient/:id/:cpf", async (req: FastifyRequest<{ Params: Params }>, res)=>{
-    const {id, cpf}= req.params
+ApiBdUser.get("/userclient/:id/:cpfUser", async (req: FastifyRequest<{ Params: Params }>, res)=>{
+    const {id}= req.params
+    const {cpfUser}= req.params
 
     const userId= Number(id)
 
-    console.log(userId)
+    const revertTipeCpf= JSON.parse(cpfUser)
+
     //verificar se o id e igual ao da tabela. Se sim a api entende que e para pegar um cliente em especifico
-    const idUserIsTrueOurFalse= await prisma.clienteuser.findUnique({where: {id: Number(id), cpf: cpf}})
-    if(idUserIsTrueOurFalse != null){
+    if(revertTipeCpf != null){
+        const idUserIsTrueOurFalse= await prisma.clienteuser.findUnique({where: {id: Number(id), cpf: cpfUser}})
         res.send(idUserIsTrueOurFalse)
     }else{
         try {
