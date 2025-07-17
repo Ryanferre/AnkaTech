@@ -45,7 +45,7 @@ export default function EditUser(){
     useEffect(()=>{
         const startGetClients= async ()=>{
             try {
-                const GetInforforClients= await axios.get(`http://localhost:4000/userclient/${idUser}`)
+                const GetInforforClients= await axios.get(`http://localhost:4000/userclient/${idUser}/${inforUser?.cpf}`)
                 setInfor(GetInforforClients.data)
             } catch (error) {
                 console.warn(error)
