@@ -23,7 +23,7 @@ type dataClientsType={
 
 export default function HomePrincipal(){
     const [InformValueDayAtivos, setInforDay]= useState< AtivosInfor []>([])
-    const [userClients, setClients]= useState<dataClientsType []>([])
+    const [ userClients, setClients ]= useState<dataClientsType []>([])
     const [InformDay, setInform]= useState<Information>()
     const userId = Cookies.get('userId')//resgata o id do cookie
 
@@ -55,7 +55,9 @@ export default function HomePrincipal(){
         const startGetClients= async ()=>{
             try {
                 const GetClientsforUser= await axios.get(`http://localhost:4000/userclient/${userId}`)
-                setClients(GetClientsforUser.data[0])
+                setClients([GetClientsforUser.data])
+
+                console.log(GetClientsforUser.data)
             } catch (error) {
                 console.warn(error)
             }
@@ -66,7 +68,7 @@ export default function HomePrincipal(){
 
     useEffect(()=>{
         console.log(userClients)
-    }, [userClients])
+    }, [])
 
     
 

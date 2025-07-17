@@ -55,13 +55,15 @@ ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params, body: Bod
 ApiBdUser.post("/cadressclient", async(req, res)=>{
         const {nome, cpf, telefone, userId}= req.body as {nome: string, cpf: string, telefone: string, userId: number}
 
+        
         console.log(req.body)
-        const createclient= await prisma.clienteuser.create({data: {nome, cpf, telefone, userId}})
 
-        if(createclient){
-            res.send(createclient)
-        }else{
-            res.send('erro de criacao')
+        try {
+          const createclient= await prisma.clienteuser.create({data: {nome, cpf, telefone, userId}})
+        
+          res.send(createclient)
+        } catch (error) {
+            res.send('erro')
         }
 
 })
@@ -71,8 +73,10 @@ ApiBdUser.get("/userclient/:id", async (req: FastifyRequest<{ Params: Params }>,
     const {id}= req.params
 
     const userId= Number(id)
+
+    console.log(userId)
     //verificar se o id e igual ao da tabela. Se sim a api entende que e para pegar um cliente em especifico
-    const idUserIsTrueOurFalse= await prisma.clienteuser.findUnique({where: {id: Number(id)},})
+    const idUserIsTrueOurFalse= await prisma.clienteuser.findUnique({where: {id: Number(id)}})
     if(idUserIsTrueOurFalse != null){
         res.send(idUserIsTrueOurFalse)
     }else{
