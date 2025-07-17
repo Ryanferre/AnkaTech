@@ -19,6 +19,7 @@ type Information={
 type dataClientsType={
     id:        number,
     nome:      string,
+    cpf: string
 }
 
 export default function HomePrincipal(){
@@ -54,7 +55,7 @@ export default function HomePrincipal(){
     useEffect(()=>{
         const startGetClients= async ()=>{
             try {
-                const GetClientsforUser= await axios.get(`http://localhost:4000/userclient/${userId}`)
+                const GetClientsforUser= await axios.get(`http://localhost:4000/userclient/${userId}/${}`)
                 setClients([GetClientsforUser.data])
 
                 console.log(GetClientsforUser.data)
