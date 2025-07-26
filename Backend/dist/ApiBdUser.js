@@ -20,6 +20,7 @@ ApiBdUser.post('/cadastro', async (req, res) => {
 //enviar os dados do usuario para o front
 ApiBdUser.get("/user/:id", async (req, res) => {
     const { id } = req.params;
+    console.log(id);
     if (!isNaN(Number(id))) {
         const userId = Number(id);
         try {
@@ -43,7 +44,6 @@ ApiBdUser.get("/user/:id", async (req, res) => {
 //cadastrar cliente
 ApiBdUser.post("/cadressclient", async (req, res) => {
     const { nome, cpf, telefone, userId } = req.body;
-    console.log(req.body);
     try {
         const createclient = await prisma.clienteuser.create({ data: { nome, cpf, telefone, userId } });
         res.send(createclient);
@@ -57,9 +57,10 @@ ApiBdUser.get("/userclient/:id/:cpfUser", async (req, res) => {
     const { id } = req.params;
     const { cpfUser } = req.params;
     const userId = Number(id);
+    const revertTipeCpf = JSON.parse(cpfUser);
     //verificar se o id e igual ao da tabela. Se sim a api entende que e para pegar um cliente em especifico
-    const idUserIsTrueOurFalse = await prisma.clienteuser.findUnique({ where: { id: Number(id) }, });
-    if (idUserIsTrueOurFalse != null) {
+    if (revertTipeCpf != null) {
+        const idUserIsTrueOurFalse = await prisma.clienteuser.findUnique({ where: { id: Number(id), cpf: cpfUser } });
         res.send(idUserIsTrueOurFalse);
     }
     else {
@@ -93,6 +94,19 @@ ApiBdUser.post("/sendData/:id", async (req, res) => {
     }
     else {
         res.send('nao foi possivel atualizar os dados');
+    }
+});
+//deletar o cliente do banco de dados
+ApiBdUser.post("/deleteCliente/:id/:cpfUser", async (req, res) => {
+    const { id } = req.params;
+    const { cpfUser } = req.params;
+    console.log(cpfUser);
+    try {
+        const deleteClienteFromUser = await prisma.clienteuser.delete({ where: { id: Number(id), cpf: cpfUser } });
+        res.send(deleteClienteFromUser);
+    }
+    catch (error) {
+        res.send('Erro ao deletar o cliente!');
     }
 });
 //buscar tabela de ativos do cliente

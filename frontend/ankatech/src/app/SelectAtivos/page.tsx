@@ -16,6 +16,7 @@ export default function selectAtivos(){
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
     const nome= searchParams.get('name')
+    const cpfUser= searchParams.get('cpf')
 
     useEffect(()=>{
         const startGetAssets= async ()=>{
@@ -39,7 +40,7 @@ export default function selectAtivos(){
             <div className="w-full h-108 flex flex-col justify-around gap-3 py-6 px-10 border border-[#5d5d5d] rounded-2xl">
                 <div className="flex flex-row justify-between items-center">
                     <h1 className="text-[#5d5d5d] text-4xl">{nome}</h1>
-                    <Link href={`/EditUser?id=${id}&name=${nome}`} className="bg-black border border-none rounded-[.6rem] px-5 py-2">Edit user</Link>
+                    <Link href={`/EditUser?id=${id}&name=${nome}&cpf=${cpfUser}`} className="bg-black border border-none rounded-[.6rem] px-5 py-2">Edit user</Link>
                 </div>
                 <div>
                     <ul className="grid grid-cols-2">

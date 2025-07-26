@@ -1,26 +1,29 @@
 'use client'
 import { useState, useEffect } from "react"
 import axios from 'axios';
-import {FaCoins, FaPlus} from 'react-icons/fa'
+import {FaCoins, FaPlus, FaChartLine} from 'react-icons/fa'
 import ListClienADDAtivos from './Components/Modal'
 import { ValuesHook } from "../costumHook/costHook";
+import Link from "next/link";
 
 type objectReceiveType= {
     id: number,
     nome: string, 
-    tipo: string, 
+    tipo: string,
+    symble: string, 
     valor: number
 }
 
 export type dataAtivosPropType={
     name:   string,
     tipo:   string,
+    symble: string,
     valor:  number
 }
 
 export default function ativosAvailable(){
     const [receiveAssets, setReceive]= useState<objectReceiveType[]>([])
-    const [inforItenADD, setInfor]= useState<dataAtivosPropType>({name: '', tipo:'', valor: 0})
+    const [inforItenADD, setInfor]= useState<dataAtivosPropType>({name: '', tipo:'', symble: '', valor: 0})
     const {getsHiddenorFlex}= ValuesHook()
     
     //pega todos os ativos
@@ -29,6 +32,8 @@ export default function ativosAvailable(){
             try {
             const GetAssetes= await axios.get("http://localhost:5000/ativos")
                 setReceive(GetAssetes.data)
+
+                console.log(GetAssetes)
             } catch (error) {
                 console.warn(error)
             }
@@ -38,8 +43,8 @@ export default function ativosAvailable(){
     }, [])
 
     //capturar informacoes do item
-    const ativoADD= (nameAtivo: string, Tipo: string, valor: number)=>{
-        setInfor({name: nameAtivo, tipo: Tipo, valor: valor})
+    const ativoADD= (nameAtivo: string, Tipo: string, symble: string, valor: number)=>{
+        setInfor({name: nameAtivo, tipo: Tipo, symble: symble, valor: valor})
         getsHiddenorFlex('flex')
     }
     return(
@@ -48,14 +53,15 @@ export default function ativosAvailable(){
                 <h1 className="text-[#5d5d5d] text-4xl">Ativos</h1>
                 <ul className="flex flex-col h-full items-center w-full px-4 lg:px-10 gap-3">
                     {receiveAssets.map((objectReceive)=>(
-                            <li className="grid grid-cols-4 items-center w-full px-1 lg:px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]" key={objectReceive.id}>
+                            <li className="grid grid-cols-5 items-center w-full px-1 lg:px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]" key={objectReceive.id}>
                                 <p className="text-[#5d5d5d] text-[.8rem]">{objectReceive.nome}</p>
                                 <p className="text-[#5d5d5d] text-[.8rem]">{objectReceive.tipo}</p>
                                 <div className="flex flex-row w-max items-center gap-3">
                                     <FaCoins color={"#f7c41f"} />
                                     <p className="text-[#5d5d5d] text-[.8rem]">{objectReceive.valor}</p>
                                 </div>
-                                <button className="w-max" onClick={()=> ativoADD(objectReceive.nome, objectReceive.tipo, objectReceive.valor)}><FaPlus color={"#f7c41f"} className="w-max" /></button>
+                                <button className="w-max" onClick={()=> ativoADD(objectReceive.nome, objectReceive.tipo, objectReceive.symble, objectReceive.valor)}><FaPlus color={"#f7c41f"} className="w-max" /></button>
+                                <Link href={`/graphic?namecripto=${objectReceive.symble}&type=${objectReceive.tipo}`}><FaChartLine color={"#f7c41f"} className="w-max" /></Link>
                             </li>
                     ))}
                 </ul>

@@ -34,6 +34,8 @@ interface Body {
 ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params, body: Body }>, res)=>{
     const {id}= req.params
 
+    console.log(id)
+
     if(!isNaN(Number(id))){
         const userId= Number(id)
         try {
@@ -55,10 +57,6 @@ ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params, body: Bod
 //cadastrar cliente
 ApiBdUser.post("/cadressclient", async(req, res)=>{
         const {nome, cpf, telefone, userId}= req.body as {nome: string, cpf: string, telefone: string, userId: number}
-
-        
-        console.log(req.body)
-
         try {
           const createclient= await prisma.clienteuser.create({data: {nome, cpf, telefone, userId}})
         
@@ -114,6 +112,22 @@ ApiBdUser.post("/sendData/:id", async (req: FastifyRequest<{ Params: Params }>, 
         res.send([UpdateCpf, UpdateTelefone])
     }else{
         res.send('nao foi possivel atualizar os dados')
+    }
+})
+
+//deletar o cliente do banco de dados
+ApiBdUser.post("/deleteCliente/:id/:cpfUser", async (req: FastifyRequest<{ Params: Params }>, res)=>{
+    const {id}= req.params
+    const {cpfUser}= req.params
+
+    console.log(cpfUser)
+
+    try {
+        const deleteClienteFromUser= await prisma.clienteuser.delete({where: {id: Number(id), cpf: cpfUser}})
+
+        res.send(deleteClienteFromUser)
+    } catch (error) {
+        res.send('Erro ao deletar o cliente!')
     }
 })
 

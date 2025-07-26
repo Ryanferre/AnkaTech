@@ -10,6 +10,64 @@ ServeAtivos.get("/ativos", async (req, res) => {
     const Resdata = JSON.parse(dataItens);
     res.send(Resdata);
 });
+ServeAtivos.get("/getdatagraphic/:typeName/:type", async (req, res) => {
+    const { typeName, type } = req.params;
+    console.log(typeName, type);
+    switch (type) {
+        case 'Ação':
+            try {
+                const getinApi = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${typeName}.SA`);
+                const responseinjson = await getinApi.json();
+                const resulte = responseinjson.chart.result[0];
+                const timestamps = resulte?.timestamp || [];
+                const closes = resulte.indicators.quote[0].close;
+                const data = timestamps.map((ts, index) => ({
+                    time: new Date(ts * 1000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                    price: closes[index]
+                }));
+                res.send(data);
+            }
+            catch (error) {
+                res.send(error);
+            }
+        case 'Cripto':
+            try {
+                const getinApi = await fetch(`https://min-api.cryptocompare.com/data/v2/histohour?fsym=${typeName}&tsym=USD&limit=27`);
+                const responseinjson = await getinApi.json();
+                const data = responseinjson.Data.Data.map(candle => ({
+                    time: new Date(candle.time * 1000).toLocaleTimeString('pt-BR', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }),
+                    price: Number(candle.close.toFixed(2))
+                }));
+                res.send(data);
+            }
+            catch (error) {
+                res.send(error);
+            }
+        case 'commodity':
+            try {
+                const decodeName = decodeURIComponent(typeName);
+                const getinApi = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${decodeName}?range=1d&interval=5m`);
+                const responseinjson = await getinApi.json();
+                const resulte = responseinjson.chart.result[0];
+                const timestamps = resulte?.timestamp || [];
+                const closes = resulte.indicators.quote[0].close;
+                const data = timestamps.map((ts, index) => ({
+                    time: new Date(ts * 1000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                    price: closes[index]
+                }));
+                res.send(data);
+            }
+            catch (error) {
+                res.send(error);
+            }
+            break;
+        default:
+            break;
+    }
+});
 const port = Number(process.env.PORT) || 5000; //5000 ou utilize qualquer uma do servidor
 ServeAtivos.listen({ port }, () => {
     console.log('rodando na porta: ' + port);

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { ValuesHook } from '../costumHook/costHook';
+import { useRouter } from 'next/navigation';
 
 //tipagem de dos dados
 type DataUser= {
@@ -26,6 +27,7 @@ export default function LoginUser(){
     const [flexLogin, setflexLogin]= useState('hidden')
     const [flexLogout, setFlexlogout]= useState('flex')
     const {Getmensage}= ValuesHook()
+    const router = useRouter()//rota apos login ou cadastro bem sucedido
 
     //validar firstname
     const firstNamefunction= (e: any)=>{
@@ -129,12 +131,17 @@ export default function LoginUser(){
     const login= async ()=>{
         try {
             const res = await axios.get(`http://localhost:4000/user/${datalogin.email}`);
-            if(res.data){
+
+            console.log(res)
+            if(res.statusText == 'OK' && res.data != null){
+                console.log(res.statusText)
                 Cookies.set('userId', res.data.id.toString(), {
                 path: '/',
-            })
-
+                })
+                router.push('/')
             
+            }else{
+                Getmensage([<p className="text-black">Usuario nao encontrado!</p>])
             }
         } catch (erro) {
             console.error('Erro ao cadastrar:', erro);

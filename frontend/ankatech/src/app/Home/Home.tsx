@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react"
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import Assistent from "../Componentes/Assistente/assistente"
 
 type AtivosInfor= {
     symbol: string,
@@ -67,9 +68,7 @@ export default function HomePrincipal(){
 
     useEffect(()=>{
         console.log(userClients)
-    }, [])
-
-    
+    }, []) 
 
     return(
         <section>
@@ -105,6 +104,7 @@ export default function HomePrincipal(){
                     </ul>
                 </div>
             </div>
+            <Assistent newDayHome={`Escreva um texto sobre: ${InformDay?.summary}`} assistenteComand="Você é um assistente de uma empresa e deve apresentar uma notícia com base no que vou passar sobre o mercado de ações. Me diga se e um bom momento para investir, com no máximo **exatos 80 caracteres ou menos**. Fale como se estivesse apresentando uma noticia diaria. Nao faca perguntas. Não ultrapasse esse limite. Não mencione que é uma resposta." assitenteInfor={null} existsButton={false}  tipeIformation={null} dataGraphi={null}/>
         </section>
     )
 }
