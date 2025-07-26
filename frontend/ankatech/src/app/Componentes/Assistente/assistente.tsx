@@ -30,6 +30,8 @@ const Assistent= ({assitenteInfor, assistenteComand, existsButton, dataGraphi, t
     const [resAssisComand, setComand]= useState('')
     const [resAssisInfor, setAssistInfor]= useState<string | ArrayInfor[] | null>('')
 
+    const KeyIA= process.env.NEXT_PUBLIC_API_IAAssistentkey
+
     useEffect(()=>{
             const GetIA= ()=>{
                 if(resAssisComand && resAssisInfor){
@@ -37,7 +39,7 @@ const Assistent= ({assitenteInfor, assistenteComand, existsButton, dataGraphi, t
                     method: 'POST',
                     url: 'https://openrouter.ai/api/v1/chat/completions',
                     headers: {
-                        'Authorization': 'Bearer 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',
+                        'Authorization': `Bearer ${KeyIA}`,
                         'Content-Type': 'application/json'
                     },
                     data: {

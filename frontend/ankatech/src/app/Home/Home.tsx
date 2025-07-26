@@ -31,7 +31,8 @@ export default function HomePrincipal(){
 
     useEffect(()=>{
        
-        const APIKEY= 'd10tdv9r01qse6ldulcgd10tdv9r01qse6lduld0'
+        const APIKEY= process.env.NEXT_PUBLIC_API_NewsGetDatakey
+
         const SYMBOL = ['BAAPL', 'MSFT', 'GOOGL', 'AMZN']
 
 
@@ -96,15 +97,15 @@ export default function HomePrincipal(){
                 <div className="w-full lg:w-120 px-4 pt-5 h-max lg:h-[30em] mx-auto">
                     <h3 className="text-[#f7c41f] uppercase text-[1.5em]">Clientes</h3>
                     <ul className="flex flex-col w-full h-40 lg:h-[25em] overflow-auto border-l border-b px-4 rounded-bl-2xl border-black shadow-md gap-3">
-                        {userClients.length !== 0 ? userClients.map((dataclient)=>(
-                                    <li key={dataclient.id} className="grid grid-cols-3 items-center w-full px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]">
-                                        <p className="text-[#5d5d5d]">{dataclient.nome}</p>
+                        {userClients.length !== 0 ? userClients.map((dataclient, index)=>(
+                                    <li key={dataclient?.id} className="grid grid-cols-3 items-center w-full px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]">
+                                        <p className="text-[#5d5d5d]">{dataclient?.nome}</p>
                                     </li>                     
                         )) : <div className="w-full h-full flex flex-col justify-center items-center"><p className="text-[#5d5d5d]">sem clientes</p></div>}
                     </ul>
                 </div>
             </div>
-            <Assistent newDayHome={`Escreva um texto sobre: ${InformDay?.summary}`} assistenteComand="Você é um assistente de uma empresa e deve apresentar uma notícia com base no que vou passar sobre o mercado de ações. Me diga se e um bom momento para investir, com no máximo **exatos 80 caracteres ou menos**. Fale como se estivesse apresentando uma noticia diaria. Nao faca perguntas. Não ultrapasse esse limite. Não mencione que é uma resposta." assitenteInfor={null} existsButton={false}  tipeIformation={null} dataGraphi={null}/>
+            <Assistent newDayHome={`Escreva um texto sobre: ${InformDay?.summary}, ${InformDay?.headline}`} assistenteComand="Você é um assistente de uma empresa e deve apresentar uma notícia com base no que vou passar sobre o mercado de ações. Me diga se e um bom momento para investir, com no máximo **exatos 80 caracteres ou menos**. Fale como se estivesse apresentando uma noticia diaria. Nao faca perguntas. Não ultrapasse esse limite. Não mencione que é uma resposta." assitenteInfor={null} existsButton={false}  tipeIformation={null} dataGraphi={null}/>
         </section>
     )
 }
