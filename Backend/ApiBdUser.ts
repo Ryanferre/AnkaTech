@@ -24,7 +24,8 @@ ApiBdUser.post('/cadastro', async(req: any, res: any)=>{
 
 interface Params {
   id: string,
-  cpfUser: string
+  cpfUser: string,
+  getTotalActive: string
 }
 interface Body {
   firstname: string;
@@ -133,17 +134,35 @@ ApiBdUser.post("/deleteCliente/:id/:cpfUser", async (req: FastifyRequest<{ Param
 
 type dataAtivosPropType = {name: string, tipo: string, symble: number, valor: number}
 
+class TableUserWithAtivos {
+    datauser: object;
+    active: number;
+
+    constructor(datauser: object, active: number){
+        this.datauser= datauser,
+        this.active= active
+    }
+}
+
 //buscar tabela de ativos do cliente
-ApiBdUser.get("/ativosclient/:id", async(req: FastifyRequest<{ Params: Params }>, res)=>{
-    const {id}= req.params
+ApiBdUser.get("/ativosclient/:id/:getTotalActive", async(req: FastifyRequest<{ Params: Params }>, res)=>{
+    const {id, getTotalActive}= req.params
 
     const ClientId= Number(id)
     try {
         const dataAtivos= await prisma.ativoscripto.findFirst({where: {clientId: ClientId}})
 
-        const acessArray= dataAtivos?.ativos as dataAtivosPropType []
-        const totalInportfolio= acessArray.reduce((add: number, numberOn: dataAtivosPropType)=> add + numberOn.valor, 0)
-        res.send([dataAtivos, totalInportfolio])
+        if(getTotalActive == "true" && dataAtivos != null){
+            const acessArray= dataAtivos?.ativos as dataAtivosPropType []
+            const totalInportfolio= acessArray.reduce((add: number, numberOn: dataAtivosPropType)=> add + numberOn.valor, 0)
+
+            const JoinInObject= new TableUserWithAtivos(dataAtivos, totalInportfolio)
+
+            console.log(JoinInObject)
+            res.send(JoinInObject)
+        }else{
+            res.send(dataAtivos)
+        }
     } catch (error) {
         res.send(error)
 

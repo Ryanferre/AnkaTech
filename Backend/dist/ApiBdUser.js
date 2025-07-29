@@ -109,15 +109,28 @@ ApiBdUser.post("/deleteCliente/:id/:cpfUser", async (req, res) => {
         res.send('Erro ao deletar o cliente!');
     }
 });
+class TableUserWithAtivos {
+    constructor(datauser, active) {
+        this.datauser = datauser,
+            this.active = active;
+    }
+}
 //buscar tabela de ativos do cliente
-ApiBdUser.get("/ativosclient/:id", async (req, res) => {
-    const { id } = req.params;
+ApiBdUser.get("/ativosclient/:id/:getTotalActive", async (req, res) => {
+    const { id, getTotalActive } = req.params;
     const ClientId = Number(id);
     try {
         const dataAtivos = await prisma.ativoscripto.findFirst({ where: { clientId: ClientId } });
-        const acessArray = dataAtivos?.ativos;
-        const totalInportfolio = acessArray.reduce((add, numberOn) => add + numberOn.valor, 0);
-        res.send([dataAtivos, totalInportfolio]);
+        if (getTotalActive == "true" && dataAtivos != null) {
+            const acessArray = dataAtivos?.ativos;
+            const totalInportfolio = acessArray.reduce((add, numberOn) => add + numberOn.valor, 0);
+            const JoinInObject = new TableUserWithAtivos(dataAtivos, totalInportfolio);
+            console.log(JoinInObject);
+            res.send(JoinInObject);
+        }
+        else {
+            res.send(dataAtivos);
+        }
     }
     catch (error) {
         res.send(error);

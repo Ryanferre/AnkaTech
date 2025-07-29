@@ -29,6 +29,19 @@ const Carteira= ()=>{
     const [AtivosofCliente, setAtivos]= useState<acoesofclient []>([])//ativos do cliente
     const userId = Cookies.get('userId')//resgata o id do cookie
 
+    //objeto que armazena 2 objetos(User e ativos),estatistica 
+
+    class JoinInformation{
+        ObUser: object;
+        ObAtivos: object;
+        Estatistic: number
+        constructor(ObUser: object, ObAtivos: object, Estatistic: number){
+            this.ObUser= ObUser;
+            this.ObAtivos= ObAtivos;
+            this.Estatistic= Estatistic
+        }
+    }
+    
     //pegar todos os cliente
     useEffect(()=>{
         const startGetClients= async ()=>{
@@ -45,6 +58,7 @@ const Carteira= ()=>{
         startGetClients()
     }, [])
 
+    //pegar ativos na api externa
     async function getAcoesInApi(type: string, typemane: string){
 
             let encodeName;
@@ -71,14 +85,13 @@ const Carteira= ()=>{
     }
 
 
-
     //pegar ativos do cliente
     useEffect(()=>{
         const startGetAssets= async ()=>{
 
             const getDataUser= userClients.map(async (element: dataClientsType)=>{
                  try {
-                    const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${element.id}`)
+                    const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${element.id}/${true}`)
 
                     console.log(GetAssetes)
                         
@@ -90,7 +103,7 @@ const Carteira= ()=>{
 
           console.log(Arr)
         }
-              startGetAssets()
+        startGetAssets()
     }, [userClients])
     return(
         <section className="px-7">
