@@ -115,17 +115,20 @@ ApiBdUser.get("/ativosclient/:id", async (req, res) => {
     const ClientId = Number(id);
     try {
         const dataAtivos = await prisma.ativoscripto.findFirst({ where: { clientId: ClientId } });
-        res.send(dataAtivos);
+        const acessArray = dataAtivos?.ativos;
+        const totalInportfolio = acessArray.reduce((add, numberOn) => add + numberOn.valor, 0);
+        res.send([dataAtivos, totalInportfolio]);
     }
     catch (error) {
         res.send(error);
+        console.log(error);
     }
 });
 //adicionar ativos ao banco de dados ou modifica-los
 ApiBdUser.post("/adicionarAtivos/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, tipo, valor } = req.body;
+        const { name, tipo, valor, symble } = req.body;
         const clientId = Number(id);
         const ativosofclient = await prisma.ativoscripto.findMany({ where: { clientId: clientId } });
         if (ativosofclient.length > 0) {
@@ -133,13 +136,13 @@ ApiBdUser.post("/adicionarAtivos/:id", async (req, res) => {
             const AtivosOfClientFormatJson = await prisma.ativoscripto.findFirst({ where: { clientId } });
             console.log(AtivosOfClientFormatJson);
             const ativosAntigos = Array.isArray(AtivosOfClientFormatJson?.ativos) ? AtivosOfClientFormatJson?.ativos : [];
-            const itensInBd = [...ativosAntigos, { name, tipo, valor }];
+            const itensInBd = [...ativosAntigos, { name, tipo, symble, valor }];
             //buscar tabela com o mesmo id do cliente
             const updateJsonAtivos = await prisma.ativoscripto.update({ where: { clientId }, data: { ativos: itensInBd } });
             res.send(updateJsonAtivos);
         }
         else { //caso uma tabela de ativos nao foi criada, cria uma com os dados que recebeu da requisicao
-            const createclient = await prisma.ativoscripto.create({ data: { ativos: { name, tipo, valor }, clientId } });
+            const createclient = await prisma.ativoscripto.create({ data: { ativos: { name, tipo, symble, valor }, clientId } });
             res.send(createclient);
         }
     }

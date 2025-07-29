@@ -42,16 +42,16 @@ export default function Header (){
             <nav className="hidden lg:flex flex-row items-center gap-5 py-0 px-2">
                <ul className="flex flex-row py-3 px-2 lg:gap-4 sm:gap-2 border rounded-2xl border-[#5d5d5d]">
                  <li className={styleLi}>
-                   Dashboard
+                   <Link href='/'>Home</Link>
                  </li>
                  <li className={styleLi}>
-                    <Link href='/clientes'>Clientes</Link>
+                    <Link href='/Carteiras'>Carteiras</Link>
                  </li>
                  <li className={styleLi}>
                     <Link href="/ativos">Ativos</Link>
                  </li>
                  <li className={styleLi}>
-                    Carteiras
+                  <Link href="/clientes">Clientes</Link>
                  </li>
                  <li className={styleLi}>
                     Relatórios

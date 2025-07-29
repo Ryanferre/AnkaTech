@@ -21,7 +21,7 @@ const Mensage= ()=>{
     }, [MensageInfor])
     
     return(
-        <div className={`${visibleMensage} absolute w-max flex-row bg-white py-3 px-2 gap-2 border rounded-[.5em] border-[#5d5d5d]`} style={{marginLeft: '24%', marginTop: '17%'}}>
+        <div className={`${visibleMensage} absolute ml-[24%] mt-[17%] lg:ml-[40%] lg:mt-[2.3%] w-max flex-row bg-white py-3 px-2 gap-2 border rounded-[.5em] border-[#5d5d5d]`}>
            {MensageInfor}
         </div>
     )

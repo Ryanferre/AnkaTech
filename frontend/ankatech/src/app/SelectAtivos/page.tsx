@@ -7,7 +7,8 @@ import { useSearchParams } from 'next/navigation'
 type objectReceiveType= {
   name: string,
   tipo: string,
-  valor: number
+  valor: number,
+  symble: string
 }
 
 export default function selectAtivos(){
@@ -22,7 +23,7 @@ export default function selectAtivos(){
         const startGetAssets= async ()=>{
             try {
             const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${id}`)
-                setReceive(GetAssetes.data.ativos)
+                setReceive([GetAssetes.data.ativos])
             } catch (error) {
                 console.warn(error)
             }

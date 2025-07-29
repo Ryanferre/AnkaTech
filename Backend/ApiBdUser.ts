@@ -131,24 +131,30 @@ ApiBdUser.post("/deleteCliente/:id/:cpfUser", async (req: FastifyRequest<{ Param
     }
 })
 
+type dataAtivosPropType = {name: string, tipo: string, symble: number, valor: number}
+
 //buscar tabela de ativos do cliente
 ApiBdUser.get("/ativosclient/:id", async(req: FastifyRequest<{ Params: Params }>, res)=>{
     const {id}= req.params
 
     const ClientId= Number(id)
-
     try {
         const dataAtivos= await prisma.ativoscripto.findFirst({where: {clientId: ClientId}})
-        res.send(dataAtivos)
+
+        const acessArray= dataAtivos?.ativos as dataAtivosPropType []
+        const totalInportfolio= acessArray.reduce((add: number, numberOn: dataAtivosPropType)=> add + numberOn.valor, 0)
+        res.send([dataAtivos, totalInportfolio])
     } catch (error) {
         res.send(error)
+
+        console.log(error)
     }
 })
 //adicionar ativos ao banco de dados ou modifica-los
 ApiBdUser.post("/adicionarAtivos/:id", async(req: FastifyRequest<{ Params: Params }>, res)=>{
     try{
         const {id}= req.params
-        const {name, tipo, valor}= req.body as {name: string, tipo: string, valor: number}
+        const {name, tipo, valor, symble}= req.body as {name: string, tipo: string, symble: number, valor: number}
 
         const clientId= Number(id)
         const ativosofclient= await prisma.ativoscripto.findMany({where: {clientId: clientId}})
@@ -162,13 +168,13 @@ ApiBdUser.post("/adicionarAtivos/:id", async(req: FastifyRequest<{ Params: Param
             const ativosAntigos = Array.isArray(AtivosOfClientFormatJson?.ativos) ? AtivosOfClientFormatJson?.ativos : [];
 
 
-            const itensInBd = [...ativosAntigos, { name, tipo, valor }];
+            const itensInBd = [...ativosAntigos, { name, tipo, symble, valor }];
 
             //buscar tabela com o mesmo id do cliente
             const updateJsonAtivos= await prisma.ativoscripto.update({where: {clientId}, data:{ativos: itensInBd as Prisma.JsonArray}})
             res.send(updateJsonAtivos)
         }else{//caso uma tabela de ativos nao foi criada, cria uma com os dados que recebeu da requisicao
-            const createclient= await prisma.ativoscripto.create({data: {ativos: { name, tipo, valor }, clientId}})
+            const createclient= await prisma.ativoscripto.create({data: {ativos: { name, tipo, symble, valor }, clientId}})
             res.send(createclient)
         }
     } catch (error){

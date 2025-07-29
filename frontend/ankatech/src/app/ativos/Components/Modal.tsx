@@ -23,7 +23,7 @@ export default function ListClienADDAtivos({item}: PropTypeImport){
     useEffect(()=>{
         const startGetClients= async ()=>{
             try {
-                const GetClientsforUser= await axios.get(`http://localhost:4000/userclient/${userId}`)
+                const GetClientsforUser= await axios.get(`http://localhost:4000/userclient/${userId}/null`)
                 setClients(GetClientsforUser.data[0])
                 console.log(GetClientsforUser.data[0])
             } catch (error) {
