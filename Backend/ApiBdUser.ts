@@ -6,7 +6,7 @@ import cors from '@fastify/cors'
 
 const prisma = new PrismaClient();
 const ApiBdUser= Fastify({logger: true})
-await ApiBdUser.register(cors, {
+ApiBdUser.register(cors, {
   origin: "*"
 })
 

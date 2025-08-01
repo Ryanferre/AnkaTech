@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import cors from '@fastify/cors';
 const prisma = new PrismaClient();
 const ApiBdUser = Fastify({ logger: true });
-await ApiBdUser.register(cors, {
+ApiBdUser.register(cors, {
     origin: "*"
 });
 //cadastrar o uruario no banco dados
