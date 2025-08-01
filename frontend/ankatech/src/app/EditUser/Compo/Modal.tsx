@@ -15,7 +15,7 @@ export default function ConfirmDataUser({Cpf, Telefone, id}: PropConfirm){
 
         const StartSendDataserver= async()=>{
             try{
-                const sendData= await axios.post(`http://localhost:4000/sendData/${id}`, {Cpf, Telefone})
+                const sendData= await axios.post(`https://ankatech.onrender.com/sendData/${id}`, {Cpf, Telefone})
 
                 console.log(sendData.data)
             }catch(error){

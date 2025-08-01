@@ -73,7 +73,7 @@ export default function LoginUser(){
     //enviar dados
     const ConnectServerBd= async ()=>{
         try {
-            const res = await axios.post('http://localhost:4000/cadastro', dados);
+            const res = await axios.post('https://ankatech.onrender.com/cadastro', dados);
             if(res.data){
                 Cookies.set('userId', res.data.id.toString(), {
                 path: '/',

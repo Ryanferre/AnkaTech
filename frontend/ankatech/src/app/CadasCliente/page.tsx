@@ -62,7 +62,7 @@ export default function clientcadres(){
     const ConnectServerBd= async ()=>{
 
         try {
-            const res = await axios.post('http://localhost:4000/cadressclient', dados);
+            const res = await axios.post('https://ankatech.onrender.com/cadressclient', dados);
 
             if(res.data){
                 Getmensage(<p className="text-black">Cliente cadastrado com sucesso!</p>)

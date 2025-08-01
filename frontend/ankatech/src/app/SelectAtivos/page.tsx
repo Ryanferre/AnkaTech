@@ -22,7 +22,7 @@ export default function selectAtivos(){
     useEffect(()=>{
         const startGetAssets= async ()=>{
             try {
-            const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${id}/${false}`)
+            const GetAssetes= await axios.get(`https://ankatech.onrender.com/ativosclient/${id}/${false}`)
                 setReceive(GetAssetes.data.ativos)
             } catch (error) {
                 console.warn(error)

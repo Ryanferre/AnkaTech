@@ -48,7 +48,7 @@ export default function EditUser(){
     useEffect(()=>{
         const startGetClients= async ()=>{
             try {
-                const GetInforforClients= await axios.get(`http://localhost:4000/userclient/${idUser}/${inforUser?.cpf}`)
+                const GetInforforClients= await axios.get(`https://ankatech.onrender.com/userclient/${idUser}/${inforUser?.cpf}`)
                 setInfor(GetInforforClients.data)
             } catch (error) {
                 console.warn(error)
@@ -89,7 +89,7 @@ export default function EditUser(){
     const router = useRouter()
     const DeleteInbd= async ()=>{
         try {
-            const TransferDataUserdelete= await axios.post(`http://localhost:4000/deleteCliente/${idUser}/${deletewithcpf}`)
+            const TransferDataUserdelete= await axios.post(`https://ankatech.onrender.com/deleteCliente/${idUser}/${deletewithcpf}`)
             router.push('/clientes')
         } catch (error) {
             console.warn(error)
