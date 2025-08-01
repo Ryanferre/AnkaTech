@@ -1,21 +1,16 @@
-import Fastify from 'fastify'
 import fs from 'fs/promises'
-import cors from '@fastify/cors'
+import { FastifyInstance } from 'fastify';
 
-const ServeAtivos= Fastify({logger: true})//Servidor e status de execulcao
-await ServeAtivos.register(cors, {
-  origin: "*"
-})
-
-ServeAtivos.get("/ativos", async (req: any, res)=>{
+export function ServerAtivos(Server: FastifyInstance){
+ Server.get("/ativos", async (req: any, res)=>{
     const dataItens= (await fs.readFile('./Ativos/Ativos.json')).toString()//acessando os itens e transformando em tipo string
 
     const Resdata= JSON.parse(dataItens)
 
     res.send(Resdata)
-})
+ })
 
-ServeAtivos.get("/getdatagraphic/:typeName/:type", async (req: any, res)=>{
+ Server.get("/getdatagraphic/:typeName/:type", async (req: any, res)=>{
   const {typeName, type}= req.params
 
   console.log(typeName, type)
@@ -91,10 +86,5 @@ ServeAtivos.get("/getdatagraphic/:typeName/:type", async (req: any, res)=>{
     default:
       break;
   }
-})
-
-const Port=  Number(process.env.PORT) || 5000//5000 ou utilize qualquer uma do servidor
-
-ServeAtivos.listen({ port: Port, host: '0.0.0.0' }, ()=>{
-    console.log('rodando na porta: ' + Port)
-})
+ })
+}

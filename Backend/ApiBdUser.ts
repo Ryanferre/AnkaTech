@@ -1,21 +1,11 @@
-import Fastify from 'fastify'
 import { FastifyRequest} from 'fastify'
+import { FastifyInstance } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import { Prisma } from '@prisma/client';
-import cors from '@fastify/cors'
-
 const prisma = new PrismaClient();
-const ApiBdUser= Fastify({logger: true})
 
-const main = async()=>{
-  await ApiBdUser.register(cors, {
-   origin: "*",
-   methods: ['GET', 'POST', 'PUT', 'DELETE']
-  })
-}
 
-main()
-
+export function mainBdUser(ApiBdUser: FastifyInstance){
 //cadastrar o uruario no banco dados
 ApiBdUser.post('/cadastro', async(req: any, res: any)=>{
     const {firstname, lastname, email}= req.body as { firstname: string, lastname: string, email: string}
@@ -231,7 +221,4 @@ ApiBdUser.post("/removeAtivos/:id", async(req: FastifyRequest<{ Params: Params }
     }
 
 })
-const Port= Number(process.env.PORT) || 4000
-ApiBdUser.listen({ port: Port, host: '0.0.0.0' }, ()=>{
-    console.log(`usando a porta ${Port}`)
-})
+}
