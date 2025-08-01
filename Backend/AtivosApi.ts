@@ -93,8 +93,8 @@ ServeAtivos.get("/getdatagraphic/:typeName/:type", async (req: any, res)=>{
   }
 })
 
-const port=  Number(process.env.PORT) || 5000//5000 ou utilize qualquer uma do servidor
+const Port=  Number(process.env.PORT) || 5000//5000 ou utilize qualquer uma do servidor
 
-ServeAtivos.listen({ port }, ()=>{
-    console.log('rodando na porta: ' + port)
+ServeAtivos.listen({ port: Port, host: '0.0.0.0' }, ()=>{
+    console.log('rodando na porta: ' + Port)
 })
