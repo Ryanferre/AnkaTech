@@ -3,9 +3,13 @@ import { PrismaClient } from '@prisma/client';
 import cors from '@fastify/cors';
 const prisma = new PrismaClient();
 const ApiBdUser = Fastify({ logger: true });
-ApiBdUser.register(cors, {
-    origin: "*"
-});
+const main = async () => {
+    await ApiBdUser.register(cors, {
+        origin: "*",
+        methods: ['GET', 'POST', 'PUT', 'DELETE']
+    });
+};
+main();
 //cadastrar o uruario no banco dados
 ApiBdUser.post('/cadastro', async (req, res) => {
     const { firstname, lastname, email } = req.body;
