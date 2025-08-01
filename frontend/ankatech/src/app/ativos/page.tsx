@@ -30,7 +30,7 @@ export default function ativosAvailable(){
     useEffect(()=>{
         const startGetAssets= async ()=>{
             try {
-            const GetAssetes= await axios.get("http://localhost:5000/ativos")
+            const GetAssetes= await axios.get("https://ankatech.onrender.com/ativos")
                 setReceive(GetAssetes.data)
 
                 console.log(GetAssetes)

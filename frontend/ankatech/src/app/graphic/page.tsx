@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import Assistent from '../Componentes/Assistente/assistente'
-import { type } from 'node:os'
 
 type dataGraphic= {
     time: string,
@@ -36,7 +35,7 @@ const GraphicCripto= ()=>{
             if(nameActive == "GC=F"){
                 encodeName= encodeURIComponent(nameActive)
                 try {
-                const getinserver= await axios.get(`http://localhost:5000/getdatagraphic/${encodeName}/${typeName}`)
+                const getinserver= await axios.get(`https://ankatech.onrender.com/getdatagraphic/${encodeName}/${typeName}`)
 
                 sentData(getinserver.data)
 
@@ -46,7 +45,7 @@ const GraphicCripto= ()=>{
                 }
             }else{
                try {
-                const getinserver= await axios.get(`http://localhost:5000/getdatagraphic/${nameActive}/${typeName}`)
+                const getinserver= await axios.get(`https://ankatech.onrender.com/getdatagraphic/${nameActive}/${typeName}`)
 
                 sentData(getinserver.data)
 

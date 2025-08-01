@@ -20,22 +20,33 @@ export function ServerAtivos(Server: FastifyInstance){
         const getinApi= await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${typeName}.SA`)
 
 
-         const responseinjson= await getinApi.json() as {chart: {result: {timestamp: number[], indicators: {quote: [{ close: number[] }]}}[]}}
+          if(!getinApi.ok){
+            const errorText = await getinApi.text()
 
-                const resulte = responseinjson.chart.result[0]
-                const timestamps = resulte?.timestamp || []
-                const closes = resulte.indicators.quote[0].close
+            console.log(errorText)
+            return res.status(500).send({
+              error: 'Erro ao buscar dados externos',
+              status: getinApi.status,
+              detail: errorText
+            })
+          }else{
+           const responseinjson= await getinApi.json() as {chart: {result: {timestamp: number[], indicators: {quote: [{ close: number[] }]}}[]}}
 
-                const data = timestamps.map((ts: number, index: number) => ({
-                time: new Date(ts * 1000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-                price: closes[index]
-            })) as [{time: string, price:number}]
+                  const resulte = responseinjson.chart.result[0]
+                  const timestamps = resulte?.timestamp || []
+                  const closes = resulte.indicators.quote[0].close
 
-         res.send(data)
+                  const data = timestamps.map((ts: number, index: number) => ({
+                  time: new Date(ts * 1000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                  price: closes[index]
+              })) as [{time: string, price:number}]
+
+            res.send(data)
+          }
+
         } catch (error) {
-          res.send(error)
+              res.send(error)
         }
-
         case 'Cripto':
          try {
           const getinApi= await fetch(`https://min-api.cryptocompare.com/data/v2/histohour?fsym=${typeName}&tsym=USD&limit=27`)
@@ -51,7 +62,7 @@ export function ServerAtivos(Server: FastifyInstance){
                               price: Number(candle.close.toFixed(2))
                             }));
 
-                            res.send(data)
+          res.send(data)
               
           } catch (error) {
             res.send(error)

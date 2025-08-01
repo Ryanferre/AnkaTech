@@ -12,15 +12,26 @@ export function ServerAtivos(Server) {
             case 'Ação':
                 try {
                     const getinApi = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${typeName}.SA`);
-                    const responseinjson = await getinApi.json();
-                    const resulte = responseinjson.chart.result[0];
-                    const timestamps = resulte?.timestamp || [];
-                    const closes = resulte.indicators.quote[0].close;
-                    const data = timestamps.map((ts, index) => ({
-                        time: new Date(ts * 1000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-                        price: closes[index]
-                    }));
-                    res.send(data);
+                    if (!getinApi.ok) {
+                        const errorText = await getinApi.text();
+                        console.log(errorText);
+                        return res.status(500).send({
+                            error: 'Erro ao buscar dados externos',
+                            status: getinApi.status,
+                            detail: errorText
+                        });
+                    }
+                    else {
+                        const responseinjson = await getinApi.json();
+                        const resulte = responseinjson.chart.result[0];
+                        const timestamps = resulte?.timestamp || [];
+                        const closes = resulte.indicators.quote[0].close;
+                        const data = timestamps.map((ts, index) => ({
+                            time: new Date(ts * 1000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                            price: closes[index]
+                        }));
+                        res.send(data);
+                    }
                 }
                 catch (error) {
                     res.send(error);
