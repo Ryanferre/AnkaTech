@@ -182,7 +182,7 @@ ApiBdUser.post("/removeAtivos/:id", async (req, res) => {
         res.send(error);
     }
 });
-const port = Number(process.env.PORT) || 4000;
-ApiBdUser.listen({ port }, () => {
-    console.log(`usando a porta ${port}`);
+const Port = Number(process.env.PORT) || 4000;
+ApiBdUser.listen({ port: Port, host: '0.0.0.0' }, () => {
+    console.log(`usando a porta ${Port}`);
 });
