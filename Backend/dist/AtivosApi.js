@@ -50,6 +50,7 @@ ServeAtivos.get("/getdatagraphic/:typeName/:type", async (req, res) => {
             try {
                 const decodeName = decodeURIComponent(typeName);
                 const getinApi = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${decodeName}?range=1d&interval=5m`);
+                console.log(getinApi);
                 const responseinjson = await getinApi.json();
                 const resulte = responseinjson.chart.result[0];
                 const timestamps = resulte?.timestamp || [];
@@ -58,6 +59,7 @@ ServeAtivos.get("/getdatagraphic/:typeName/:type", async (req, res) => {
                     time: new Date(ts * 1000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
                     price: closes[index]
                 }));
+                console.log(data);
                 res.send(data);
             }
             catch (error) {

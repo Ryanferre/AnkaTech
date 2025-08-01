@@ -22,8 +22,8 @@ export default function selectAtivos(){
     useEffect(()=>{
         const startGetAssets= async ()=>{
             try {
-            const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${id}`)
-                setReceive([GetAssetes.data.ativos])
+            const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${id}/${false}`)
+                setReceive(GetAssetes.data.ativos)
             } catch (error) {
                 console.warn(error)
             }
@@ -35,6 +35,10 @@ export default function selectAtivos(){
     useEffect(()=>{
         const TotalValue= receiveAssets.reduce((total, valor)=> total + valor.valor, 0)
         setValor(TotalValue)
+    }, [receiveAssets])
+
+    useEffect(()=>{
+        console.log(receiveAssets[0])
     }, [receiveAssets])
     return(
         <section className="flex flex-col py-19 items-center px-7">
@@ -64,7 +68,7 @@ export default function selectAtivos(){
                         <p className="text-[#5d5d5d]">Ativos</p>
                         <Link href="/ativos" className="bg-black border border-none rounded-[.6rem] px-5 py-2">Adicionar ativo</Link>
                     </div>
-                    <ul className="flex flex-col h-60 items-center w-full overflow-auto gap-3">
+                    <ul className="flex flex-col h-60 items-center w-full overflow-x-scroll gap-3">
                         {receiveAssets.length !== 0 ? receiveAssets.map((dataclient, index)=>(
                                 <li key={index} className="grid grid-cols-3 items-center w-full px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]">
                                     <p className="text-[#5d5d5d]">{dataclient.name}</p>

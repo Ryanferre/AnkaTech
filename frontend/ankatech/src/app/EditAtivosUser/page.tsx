@@ -20,7 +20,7 @@ export default function EditativoUser(){
     useEffect(()=>{
             const startGetAssets= async ()=>{
                 try {
-                const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${idUser}`)
+                const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${idUser}/${false}`)
                     setReceive(GetAssetes.data.ativos)
                 } catch (error) {
                     console.warn(error)

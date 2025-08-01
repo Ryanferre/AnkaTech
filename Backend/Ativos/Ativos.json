@@ -1,5 +1,5 @@
 [
-  { "id": 1, "nome": "Ação PETR4", "tipo": "Ação", "symble": "PETR4", "valor": 100.5 },
-  { "id": 2, "nome": "commodity OZ1D", "tipo": "commodity", "symble": "GC=F", "valor": 250.0 },
-  { "id": 3, "nome": "Cripto BTC", "tipo": "Cripto", "symble": "BTC", "valor": 70000.0 }
+  { "id": 1, "nome": "Ação PETR4", "tipo": "Ação", "symble": "PETR4", "valor": 33.60 },
+  { "id": 2, "nome": "commodity OZ1D", "tipo": "commodity", "symble": "GC=F", "valor": 1.17 },
+  { "id": 3, "nome": "Cripto BTC", "tipo": "Cripto", "symble": "BTC", "valor": 65.33 }
 ]

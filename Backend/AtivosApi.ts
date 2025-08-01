@@ -1,7 +1,6 @@
 import Fastify from 'fastify'
 import fs from 'fs/promises'
 import cors from '@fastify/cors'
-import { Server } from 'http'
 
 const ServeAtivos= Fastify({logger: true})//Servidor e status de execulcao
 await ServeAtivos.register(cors, {
@@ -65,9 +64,10 @@ ServeAtivos.get("/getdatagraphic/:typeName/:type", async (req: any, res)=>{
       
       case 'commodity':
         try {
-        const decodeName= decodeURIComponent(typeName)
-        const getinApi= await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${decodeName}?range=1d&interval=5m`)
+         const decodeName= decodeURIComponent(typeName)
+         const getinApi= await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${decodeName}?range=1d&interval=5m`)
 
+         console.log(getinApi)
 
          const responseinjson= await getinApi.json() as {chart: {result: {timestamp: number[], indicators: {quote: [{ close: number[] }]}}[]}}
 
@@ -79,6 +79,8 @@ ServeAtivos.get("/getdatagraphic/:typeName/:type", async (req: any, res)=>{
                 time: new Date(ts * 1000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
                 price: closes[index]
             })) as [{time: string, price:number}]
+
+         console.log(data)
 
          res.send(data)
         } catch (error) {

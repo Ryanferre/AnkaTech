@@ -120,13 +120,19 @@ ApiBdUser.get("/ativosclient/:id/:getTotalActive", async (req, res) => {
     const { id, getTotalActive } = req.params;
     const ClientId = Number(id);
     try {
-        const dataAtivos = await prisma.ativoscripto.findFirst({ where: { clientId: ClientId } });
-        if (getTotalActive == "true" && dataAtivos != null) {
-            const acessArray = dataAtivos?.ativos;
-            const totalInportfolio = acessArray.reduce((add, numberOn) => add + numberOn.valor, 0);
-            const JoinInObject = new TableUserWithAtivos(dataAtivos, totalInportfolio);
-            console.log(JoinInObject);
-            res.send(JoinInObject);
+        let dataAtivos = await prisma.ativoscripto.findFirst({ where: { clientId: ClientId } });
+        if (getTotalActive === "true" && typeof dataAtivos !== typeof Object) {
+            let acessArray = dataAtivos?.ativos;
+            if (acessArray != null) {
+                const totalInportfolio = acessArray.reduce((add, numberOn) => add + numberOn.valor, 0);
+                const JoinInObject = new TableUserWithAtivos(dataAtivos, totalInportfolio);
+                res.send(JoinInObject);
+            }
+            else {
+                dataAtivos = { id: 0, ativos: [], clientId: 0 };
+                const JoinInObject = new TableUserWithAtivos(dataAtivos, 0);
+                res.send(JoinInObject);
+            }
         }
         else {
             res.send(dataAtivos);

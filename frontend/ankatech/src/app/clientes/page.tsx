@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
-import { promises } from "dns";
 
 type dataClientsType={
     id:        number,
@@ -12,33 +11,47 @@ type dataClientsType={
     total: number
 }
 
-type dataAtivosPropType={
-    name:   string,
-    tipo:   string,
+interface dataActiveInObject{
+    name: string,
     symble: string,
-    valor:  number
+    tipo: string,
+    valor: number
 }
 
-type acoesofclient= {
-    valor: string
+type TypeActive= {
+    ativos: Array<dataActiveInObject>,
+    clientId: number,
+    id: number
+}
+
+type dataAtivosClassType={
+     ObUser: dataClientsType;
+     ObAtivos: TypeActive;
+     somOfLAstPrice: number | null; //armazena a soma dos ultimos prico anunciado na bolsa de vaores
+     Total: number; //aramazena o valor total somado pela API
+     Estatistic: number | null//armazena a estastistica de valor
 }
 
 const Carteira= ()=>{
     const [userClients, setClients]= useState<dataClientsType []>([])
-    const [LastPrice, setLast]= useState(0)//ultimo preco anunciado
-    const [AtivosofCliente, setAtivos]= useState<acoesofclient []>([])//ativos do cliente
+    const [startModif, setstart]= useState(0)//ultimo preco anunciado
+    const [AtivosofCliente, setAtivos]= useState<any []>([])//ativos do cliente
     const userId = Cookies.get('userId')//resgata o id do cookie
 
     //objeto que armazena 2 objetos(User e ativos),estatistica 
 
     class JoinInformation{
-        ObUser: object;
-        ObAtivos: object;
-        Estatistic: number
-        constructor(ObUser: object, ObAtivos: object, Estatistic: number){
+        ObUser: dataClientsType;
+        ObAtivos: dataAtivosClassType;
+        Total: number;
+        somOfLAstPrice: number | null;
+        Estatistic: number | null
+        constructor(ObUser: dataClientsType, ObAtivos: dataAtivosClassType, Total: number , Estatistic: number | null, somOfLAstPrice: number | null){
             this.ObUser= ObUser;
             this.ObAtivos= ObAtivos;
-            this.Estatistic= Estatistic
+            this.Total= Total;
+            this.somOfLAstPrice= somOfLAstPrice;
+            this.Estatistic= Estatistic;
         }
     }
     
@@ -59,11 +72,11 @@ const Carteira= ()=>{
     }, [])
 
     //pegar ativos na api externa
-    async function getAcoesInApi(type: string, typemane: string){
+    async function getAcoesInApi(type: string, typename: string){
 
             let encodeName;
-            if(typemane== "GC=F"){
-                encodeName= encodeURIComponent(typemane)
+            if(typename== "GC=F"){
+                encodeName= encodeURIComponent(typename)
                 try {
                 const getinserver= await axios.get(`http://localhost:5000/getdatagraphic/${encodeName}/${type}`)
 
@@ -73,11 +86,11 @@ const Carteira= ()=>{
                 }
             }else{
                try {
-                const getinserver= await axios.get(`http://localhost:5000/getdatagraphic/${typemane}/${type}`)
+                const getinserver= await axios.get(`http://localhost:5000/getdatagraphic/${typename}/${type}`)
 
                 
 
-                console.log(getinserver.data)
+                return getinserver.data
                 } catch (error) {
                     console.log(error)
                 } 
@@ -89,31 +102,97 @@ const Carteira= ()=>{
     useEffect(()=>{
         const startGetAssets= async ()=>{
 
-            const getDataUser= userClients.map(async (element: dataClientsType)=>{
+            const getDataUser= userClients.map(async (element: any | null)=>{
                  try {
                     const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${element.id}/${true}`)
 
-                    console.log(GetAssetes)
-                        
+                    return GetAssetes
                 } catch (error) {
                         console.warn(error)
                     }
             })
-          const Arr= Promise.all(getDataUser)
+         
+         const joinResult= Promise.all(getDataUser)
 
-          console.log(Arr)
+          joinResult.then((res)=>{
+            console.log(res)
+            for(let i =0; i < res.length && userClients.length; i++){
+
+                const isolateKeyActive= res[i]?.data?.active//Valor total somando pela API
+
+                const stanObject= new JoinInformation(userClients[i], res[i]?.data?.datauser, isolateKeyActive, null, null)
+                setAtivos(prev => [...prev, stanObject])
+                setstart(1)
+            }
+          })
         }
         startGetAssets()
     }, [userClients])
+
+    useEffect(()=>{
+        const rebuildingObjectJoin= async ()=>{
+
+            const copia = [...AtivosofCliente]
+
+            //array com os objetos que representa cada usuario
+            for (let i = 0; i < AtivosofCliente.length; i++) {
+
+                let Allsom= 0
+                let Includ: { [symble: string]: number }= {}
+
+                //se pelo menos um desses ativos nao for null, ou seja se o array de ativos existir
+                if (AtivosofCliente[i].ObAtivos.ativos != null) {
+                    const ativos = AtivosofCliente[i].ObAtivos.ativos//capture o array
+
+                    ativos.forEach((ativo: any) => { Includ[ativo.symble] = (Includ[ativo.symble] || 0) + 1;})
+
+                    //percorra o array
+                    for(const symble in Includ){
+                        try {
+                            const TypeAction= ativos.find((a: any) => a.symble === symble)?.tipo
+                            const res = await getAcoesInApi(TypeAction, symble)
+                            const JoinAll= res.flat()//junta todos os arrays, caso a api retorne os precos dividido em dois ou mais arrays
+
+                            const Format= JoinAll.length - 1//acessar o ultimo indice com o preco
+
+                            const Quant= Includ[symble]
+
+                            console.log(Quant)
+                            
+                            Allsom += JoinAll[Format]?.price * Quant //acessa o preco atual de cada acao e multiplica com o tamanho do array que armazena as acoes
+
+                            console.log("Preço retornado: ",JoinAll[Format]?.price)
+
+                          } catch (error) {
+                            console.log(error)
+                          }
+                      await new Promise(resolve => setTimeout(resolve, 1000))
+                    }
+                    const diff = Allsom - AtivosofCliente[i].Total//lucro
+
+
+                    copia[i].Estatistic = (diff / copia[i].Total) * 100;
+                    copia[i].somOfLAstPrice = Allsom;
+                }
+            }
+            setAtivos(copia)
+        }
+        rebuildingObjectJoin()
+    }, [startModif])
+
+    useEffect(()=>{
+        console.log(AtivosofCliente)
+    }, [AtivosofCliente])
     return(
         <section className="px-7">
             <div className="w-full lex flex-col items-center px-4 lg:px-7 py-8 gap-17 border border-[#5d5d5d] rounded-2xl">
                 <ul className="flex flex-col w-full h-[20rem] overflow-scroll py-4 px-3 lg:px-4 border-l border-b rounded-bl-2xl border-black shadow-md gap-3">
-                    {userClients.length !== 0 ? userClients.map((dataclient)=>(
+                    {AtivosofCliente.length !== 0 ? AtivosofCliente.map((dataclient)=>(
                           <li className="flex flex-row justify-around items-center w-full px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]">
-                            <p className="text-[#5d5d5d] w-max">{dataclient.nome}</p>
-                            <p className="text-[#5d5d5d] w-max">{dataclient.total}</p>
-                            <p className="text-[#5d5d5d] w-max">{dataclient.telefone}</p>
+                            <p className="text-[#5d5d5d] w-max">{dataclient.ObUser.nome}</p>
+                            <p className="text-[#5d5d5d] w-max">{dataclient.Total}</p>
+                            <p className="text-[#5d5d5d] w-max">{typeof dataclient.somOfLAstPrice === "number" ? `${dataclient.somOfLAstPrice.toFixed(2)}` : "N/A"}</p>
+                            <p className={`${dataclient.Estatistic > 0 ? "text-green-600" : "text-red-500"} w-max`}>{typeof dataclient.Estatistic === "number" ? `${dataclient.Estatistic.toFixed(2)}%` : "N/A"}</p>
                           </li>                     
                     )) : <div className="w-full h-full flex flex-col justify-center items-center">
                           <p className="text-[#5d5d5d]">Adicione clientes</p>
