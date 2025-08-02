@@ -59,7 +59,7 @@ const Carteira= ()=>{
     useEffect(()=>{
         const startGetClients= async ()=>{
             try {
-                const GetClientsforUser= await axios.get(`http://localhost:4000/userclient/${userId}/${null}`)
+                const GetClientsforUser= await axios.get(`https://ankatech.onrender.com/userclient/${userId}/${null}`)
                 setClients(GetClientsforUser.data[0])
 
                 console.log(GetClientsforUser.data[0])
@@ -78,7 +78,7 @@ const Carteira= ()=>{
             if(typename== "GC=F"){
                 encodeName= encodeURIComponent(typename)
                 try {
-                const getinserver= await axios.get(`http://localhost:5000/getdatagraphic/${encodeName}/${type}`)
+                const getinserver= await axios.get(`hhttps://ankatech.onrender.com/getdatagraphic/${encodeName}/${type}`)
 
                 return getinserver.data
                 } catch (error) {
@@ -86,7 +86,7 @@ const Carteira= ()=>{
                 }
             }else{
                try {
-                const getinserver= await axios.get(`http://localhost:5000/getdatagraphic/${typename}/${type}`)
+                const getinserver= await axios.get(`https://ankatech.onrender.com/getdatagraphic/${typename}/${type}`)
 
                 
 
@@ -104,7 +104,7 @@ const Carteira= ()=>{
 
             const getDataUser= userClients.map(async (element: any | null)=>{
                  try {
-                    const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${element.id}/${true}`)
+                    const GetAssetes= await axios.get(`https://ankatech.onrender.com/ativosclient/${element.id}/${true}`)
 
                     return GetAssetes
                 } catch (error) {

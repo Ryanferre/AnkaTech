@@ -20,7 +20,7 @@ export default function EditativoUser(){
     useEffect(()=>{
             const startGetAssets= async ()=>{
                 try {
-                const GetAssetes= await axios.get(`http://localhost:4000/ativosclient/${idUser}/${false}`)
+                const GetAssetes= await axios.get(`https://ankatech.onrender.com/ativosclient/${idUser}/${false}`)
                     setReceive(GetAssetes.data.ativos)
                 } catch (error) {
                     console.warn(error)
@@ -40,7 +40,7 @@ export default function EditativoUser(){
     const RemoveAtivos= ()=>{
         const startpushAtivos= async ()=>{
             try {
-                const PostAtivosOfUser= await axios.post(`http://localhost:4000/removeAtivos/${idUser}`, receiveAssets)
+                const PostAtivosOfUser= await axios.post(`https://ankatech.onrender.com/removeAtivos/${idUser}`, receiveAssets)
 
                 setReceive(PostAtivosOfUser.data.ativos)
             } catch (error) {
