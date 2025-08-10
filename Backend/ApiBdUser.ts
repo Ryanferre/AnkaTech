@@ -50,6 +50,7 @@ ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params, body: Bod
     console.log(id)
 
     if(!isNaN(Number(id))){
+        console.log(id)
         const userId= Number(id)
         try {
            const dataUser= await prisma.user.findUnique({where: { id: userId }})
@@ -58,6 +59,7 @@ ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params, body: Bod
             res.send(error)
         } 
     }else{
+    console.log(id)
         try {
            const dataUser= await prisma.user.findUnique({where: { email: id }})
            res.send(dataUser)

@@ -29,6 +29,7 @@ export function mainBdUser(ApiBdUser) {
         const { id } = req.params;
         console.log(id);
         if (!isNaN(Number(id))) {
+            console.log(id);
             const userId = Number(id);
             try {
                 const dataUser = await prisma.user.findUnique({ where: { id: userId } });
@@ -39,6 +40,7 @@ export function mainBdUser(ApiBdUser) {
             }
         }
         else {
+            console.log(id);
             try {
                 const dataUser = await prisma.user.findUnique({ where: { email: id } });
                 res.send(dataUser);
