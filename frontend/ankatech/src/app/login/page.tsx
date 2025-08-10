@@ -134,7 +134,6 @@ export default function LoginUser(){
             const res = await axios.get(`https://ankatech.onrender.com/user/${datalogin.email}`);
 
             if(res.statusText == 'OK' && res.data != null){
-                console.log(res.statusText)
                 Cookies.set('userId', res.data.id.toString(), {
                 path: '/',
                 })

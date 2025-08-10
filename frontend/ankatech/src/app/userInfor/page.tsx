@@ -26,6 +26,18 @@ export default function UserInformation(){
 
         startgetdatauser()
     }, [])
+
+    const deleteUser= async()=>{
+        try {
+            const resAplication= await axios.post(`https://ankatech.onrender.com/user/${resdatauser.email}/${userId}`)
+
+            if(resAplication){
+                document.cookie = userId + '=; Max-Age=0; path=/'
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
     return(
         <section className="flex flex-col py-28 items-center">
             <div className="w-96 h-80 flex flex-col items-center justify-center gap-10 border border-[#5d5d5d] rounded-2xl">
@@ -45,6 +57,7 @@ export default function UserInformation(){
                     </li>
                 </ul>
             </div>
+            <button className="bg-black border border-none rounded-[.6rem] px-15 py-2" onClick={deleteUser}>Delete</button>
         </section>
     )
 }

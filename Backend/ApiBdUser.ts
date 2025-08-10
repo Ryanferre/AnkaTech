@@ -2,6 +2,7 @@ import { FastifyRequest} from 'fastify'
 import { FastifyInstance } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import { Prisma } from '@prisma/client';
+import { send } from 'process';
 const prisma = new PrismaClient();
 
 
@@ -13,6 +14,21 @@ ApiBdUser.post('/cadastro', async(req: any, res: any)=>{
     try {
         const Createuser= await prisma.user.create({data: {firstname, lastname, email}})
         res.send(Createuser)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+//deletar usuario
+ApiBdUser.post('/DeletUser/:email/:id', async(req: any, res: any)=>{
+    const {email, id}= req.params as {email: string, id: string}
+
+    const reverType= Number(id)
+
+    try {
+        const deleteIn= await prisma.user.delete({where: {id: reverType, email: email}})
+
+        res.send(deleteIn)
     } catch (error) {
         res.send(error)
     }

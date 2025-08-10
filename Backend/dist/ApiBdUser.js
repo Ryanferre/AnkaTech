@@ -12,6 +12,18 @@ export function mainBdUser(ApiBdUser) {
             res.send(error);
         }
     });
+    //deletar usuario
+    ApiBdUser.post('/DeletUser/:email/:id', async (req, res) => {
+        const { email, id } = req.params;
+        const reverType = Number(id);
+        try {
+            const deleteIn = await prisma.user.delete({ where: { id: reverType, email: email } });
+            res.send(deleteIn);
+        }
+        catch (error) {
+            res.send(error);
+        }
+    });
     //enviar os dados do usuario para o front
     ApiBdUser.get("/user/:id", async (req, res) => {
         const { id } = req.params;
