@@ -76,6 +76,8 @@ export default function clientcadres(){
             if(dados[typedKey] != ''){
                 try {
                     const res = await axios.post('https://ankatech.onrender.com/cadressclient', dados)
+
+            console.log(res)
  
                     if(res.data != 'http://localhost:3000/login'){
                     Getmensage(<p className="text-black">Cliente cadastrado com sucesso!</p>)

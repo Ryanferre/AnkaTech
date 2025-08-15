@@ -13,8 +13,8 @@ type userdata= {
 export default function UserInformation(){
     const [resdatauser, setdata]= useState<userdata>({firstname: '', lastname: '', email: ''})
     const router = useRouter()//rota apos deletar usuario ou sair da conta
+    const [userId, setId]= useState(Cookies.get('userId'))//resgata o id do cookie e armazena em um State, quando modificado como undefined, recarrega a pagina
 
-    const userId = Cookies.get('userId')//resgata o id do cookie
     //faz uma requisição ao backend para pegar os dados do usuario
     useEffect(()=>{
         const startgetdatauser= async ()=>{
@@ -35,7 +35,7 @@ export default function UserInformation(){
 
             if(resAplication){
                 Cookies.remove('userId', { path: '/' })
-                router.push('/')
+                setId(undefined)//undefined indica que o id foi removido
             }
         } catch (error) {
             console.error(error)
@@ -44,12 +44,16 @@ export default function UserInformation(){
 
     const exitFromAcount= ()=>{
         Cookies.remove('userId', { path: '/' })
-        if(!userId){
+        setId(undefined)//undefined indica que o id foi removido
+    }
+
+    useEffect(()=>{
+        if(userId == undefined){
             router.push('/')
         }else{
             console.log(userId)
         }
-    }
+    }, [userId])
     return(
         <section className="flex flex-col py-28 gap-10 items-center">
             <div className="w-96 h-80 flex flex-col items-center justify-center gap-10 border border-[#5d5d5d] rounded-2xl">
