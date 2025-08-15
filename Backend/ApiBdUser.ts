@@ -13,7 +13,7 @@ ApiBdUser.post('/cadastro', async(req: any, res: any)=>{
 
     try {
         const Createuser= await prisma.user.create({data: {firstname, lastname, email}})
-        res.send(Createuser)
+        res.send([Createuser, email])
     } catch (error) {
         res.send(error)
     }
@@ -43,14 +43,12 @@ interface Body {
   firstname: string;
   email: string;
 }
+
 //enviar os dados do usuario para o front
 ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params, body: Body }>, res)=>{
     const {id}= req.params
 
-    console.log(id)
-
     if(!isNaN(Number(id))){
-        console.log(id)
         const userId= Number(id)
         try {
            const dataUser= await prisma.user.findUnique({where: { id: userId }})
@@ -59,7 +57,6 @@ ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params, body: Bod
             res.send(error)
         } 
     }else{
-    console.log(id)
         try {
            const dataUser= await prisma.user.findUnique({where: { email: id }})
            res.send(dataUser)
@@ -69,15 +66,34 @@ ApiBdUser.get("/user/:id", async(req: FastifyRequest<{ Params: Params, body: Bod
     }
 })
 
+async function cadresClientInBd (nome: string, cpf: string, telefone: string, userId: number){
+            try {
+                const createclient= await prisma.clienteuser.create({data: {nome, cpf, telefone, userId}})
+                
+                 if(createclient){
+                    return createclient
+                 }
+            } catch (error) {
+                return 'erro'
+            }
+}
+
 //cadastrar cliente
 ApiBdUser.post("/cadressclient", async(req, res)=>{
-        const {nome, cpf, telefone, userId}= req.body as {nome: string, cpf: string, telefone: string, userId: number}
-        try {
-          const createclient= await prisma.clienteuser.create({data: {nome, cpf, telefone, userId}})
-        
-          res.send(createclient)
-        } catch (error) {
-            res.send('erro')
+        const {nome, cpf, telefone, userId, email}= req.body as {nome: string, cpf: string, telefone: string, userId: number, email: string}
+
+        if(email){
+            try {
+                const getEmilUser= await prisma.user.findUnique({where: {email: email}})
+                if(getEmilUser){
+                   const resCadres= await cadresClientInBd(nome, cpf, telefone, userId)
+                   res.send(resCadres)
+                }
+            }catch(error){
+             res.send('http://localhost:3000/login')
+            }
+        }else{
+            res.send('http://localhost:3000/login')
         }
 
 })
@@ -110,8 +126,6 @@ ApiBdUser.post("/sendData/:id", async (req: FastifyRequest<{ Params: Params }>, 
     const {id}= req.params
     const {Cpf, telefone}= req.body as {Cpf: string, telefone: string}
     const CompareData= await prisma.clienteuser.findUnique({where:{id: Number(id)}})
-
-    console.log(req.body)
 
     if(CompareData?.cpf !== Cpf && CompareData?.telefone === telefone){
         const UpdateOnlyCpf= await prisma.clienteuser.update({where: {id: Number(id)}, data:{cpf: Cpf}})

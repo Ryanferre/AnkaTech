@@ -1,8 +1,9 @@
-'use client'
+"use client"
 import { useState, useEffect } from "react"
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { ValuesHook } from "../costumHook/costHook";
+import { useRouter } from "next/navigation";
 
 type datauser={
     nome: string,
@@ -18,6 +19,8 @@ export default function clientcadres(){
     const [visibleTelefone, setTelefone]= useState('0')//visibilidade alert Telefone
     const userIdcookie = Cookies.get('userId')//resgata o id do cookie
     const {Getmensage, MensageInfor}= ValuesHook()
+
+    const router = useRouter()//rota para login
 
     //validar name
     const firstNamefunction= (e: any)=>{
@@ -58,18 +61,35 @@ export default function clientcadres(){
         }
     }
 
+    //funcao de redirecionamento
+    function redirectForLogin (redirect: string){
+        setTimeout(()=>{router.push(redirect)}, 3000)
+    }
+
     //enviar dados
     const ConnectServerBd= async ()=>{
 
-        try {
-            const res = await axios.post('https://ankatech.onrender.com/cadressclient', dados);
+        for(let i in dados){
+            const typedKey = i as keyof datauser
 
-            if(res.data){
-                Getmensage(<p className="text-black">Cliente cadastrado com sucesso!</p>)
+            console.log(dados[typedKey])
+            if(dados[typedKey] != ''){
+                try {
+                    const res = await axios.post('https://ankatech.onrender.com/cadressclient', dados)
+ 
+                    if(res.data != 'http://localhost:3000/login'){
+                    Getmensage(<p className="text-black">Cliente cadastrado com sucesso!</p>)
+                }else{
+                    Getmensage(<p className="text-black text-center">usuario nao cadastrado! <br/> Voce sera direcionado para a pagina de login</p>)
+                    redirectForLogin(res.data)
+                }
+                } catch (erro) {
+                   console.error('Erro ao cadastrar:', erro);
+                   Getmensage(<p className="text-black">usuario nao cadastrado!</p>)
+                }
+            }else{
+                Getmensage(<p className="text-black">Preencha os campos abaixo!</p>)
             }
-        } catch (erro) {
-            console.error('Erro ao cadastrar:', erro);
-            Getmensage(<p className="text-black">usuario nao cadastrado!</p>)
         }
     }
 

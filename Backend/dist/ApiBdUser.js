@@ -6,7 +6,7 @@ export function mainBdUser(ApiBdUser) {
         const { firstname, lastname, email } = req.body;
         try {
             const Createuser = await prisma.user.create({ data: { firstname, lastname, email } });
-            res.send(Createuser);
+            res.send([Createuser, email]);
         }
         catch (error) {
             res.send(error);
@@ -27,9 +27,7 @@ export function mainBdUser(ApiBdUser) {
     //enviar os dados do usuario para o front
     ApiBdUser.get("/user/:id", async (req, res) => {
         const { id } = req.params;
-        console.log(id);
         if (!isNaN(Number(id))) {
-            console.log(id);
             const userId = Number(id);
             try {
                 const dataUser = await prisma.user.findUnique({ where: { id: userId } });
@@ -40,7 +38,6 @@ export function mainBdUser(ApiBdUser) {
             }
         }
         else {
-            console.log(id);
             try {
                 const dataUser = await prisma.user.findUnique({ where: { email: id } });
                 res.send(dataUser);
@@ -50,15 +47,34 @@ export function mainBdUser(ApiBdUser) {
             }
         }
     });
-    //cadastrar cliente
-    ApiBdUser.post("/cadressclient", async (req, res) => {
-        const { nome, cpf, telefone, userId } = req.body;
+    async function cadresClientInBd(nome, cpf, telefone, userId) {
         try {
             const createclient = await prisma.clienteuser.create({ data: { nome, cpf, telefone, userId } });
-            res.send(createclient);
+            if (createclient) {
+                return createclient;
+            }
         }
         catch (error) {
-            res.send('erro');
+            return 'erro';
+        }
+    }
+    //cadastrar cliente
+    ApiBdUser.post("/cadressclient", async (req, res) => {
+        const { nome, cpf, telefone, userId, email } = req.body;
+        if (email) {
+            try {
+                const getEmilUser = await prisma.user.findUnique({ where: { email: email } });
+                if (getEmilUser) {
+                    const resCadres = await cadresClientInBd(nome, cpf, telefone, userId);
+                    res.send(resCadres);
+                }
+            }
+            catch (error) {
+                res.send('http://localhost:3000/login');
+            }
+        }
+        else {
+            res.send('http://localhost:3000/login');
         }
     });
     //pegar clientes no banco de dados
@@ -87,7 +103,6 @@ export function mainBdUser(ApiBdUser) {
         const { id } = req.params;
         const { Cpf, telefone } = req.body;
         const CompareData = await prisma.clienteuser.findUnique({ where: { id: Number(id) } });
-        console.log(req.body);
         if (CompareData?.cpf !== Cpf && CompareData?.telefone === telefone) {
             const UpdateOnlyCpf = await prisma.clienteuser.update({ where: { id: Number(id) }, data: { cpf: Cpf } });
             res.send(UpdateOnlyCpf);

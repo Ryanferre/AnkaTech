@@ -70,10 +70,10 @@ export default function LoginUser(){
 
 
 
-    //enviar dados
+    //enviar dados de cadastro
     const ConnectServerBd= async ()=>{
         try {
-            const res = await axios.post('http://localhost:4000/cadastro', dados);
+            const res = await axios.post('https://ankatech.onrender.com/cadastro', dados);
             if(res.data){
                 Cookies.set('userId', res.data.id.toString(), {
                 path: '/',
@@ -131,14 +131,13 @@ export default function LoginUser(){
     const login= async ()=>{
         
         try {
-            const res = await axios.get(`http://localhost:4000/user/${datalogin.email}`);
+            const res = await axios.get(`https://ankatech.onrender.com/user/${datalogin.email}`)
 
             console.log(res)
 
-            if(res.statusText == 'OK' && res.data != null){
-                Cookies.set('userId', res.data.id.toString(), {
-                path: '/',
-                })
+            if(res.status == 200 && res.data.id != null){
+                Cookies.set('userId', res.data.id.toString(), {path: '/',})
+                Cookies.set('userEmail', res.data.email.toString(), {path: '/',})
                 router.push('/')
             
             }else{

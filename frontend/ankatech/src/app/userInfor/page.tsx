@@ -19,7 +19,7 @@ export default function UserInformation(){
     useEffect(()=>{
         const startgetdatauser= async ()=>{
             try {
-            const GetdataUser= await axios.get(`https://ankatech.onrender.com/user/${userId}`)
+            const GetdataUser= await axios.get(`http://localhost:4000/user/${userId}`)
             setdata(GetdataUser.data)
             } catch (error) {
                 console.warn(error)
@@ -31,7 +31,7 @@ export default function UserInformation(){
 
     const deleteUser= async()=>{
         try {
-            const resAplication= await axios.post(`https://ankatech.onrender.com/user/${resdatauser.email}/${userId}`)
+            const resAplication= await axios.post(`http://localhost:4000/user/${resdatauser.email}/${userId}`)
 
             if(resAplication){
                 Cookies.remove('userId', { path: '/' })
