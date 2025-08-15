@@ -72,19 +72,20 @@ export default function clientcadres(){
         for(let i in dados){
             const typedKey = i as keyof datauser
 
-            console.log(dados[typedKey])
             if(dados[typedKey] != ''){
                 try {
                     const res = await axios.post('https://ankatech.onrender.com/cadressclient', dados)
-
-            console.log(res)
  
-                    if(res.data != 'http://localhost:3000/login'){
-                    Getmensage(<p className="text-black">Cliente cadastrado com sucesso!</p>)
-                }else{
-                    Getmensage(<p className="text-black text-center">usuario nao cadastrado! <br/> Voce sera direcionado para a pagina de login</p>)
-                    redirectForLogin(res.data)
-                }
+                    if(res.data === 'http://localhost:3000/login'){
+                         Getmensage(<p className="text-black text-center">usuario nao cadastrado! <br/> Voce sera direcionado para a pagina de login</p>)
+                         redirectForLogin(res.data)
+                    }else if(res.data === 'erro'){
+                         Getmensage(<p className="text-black">Cliente ja cadastrado!</p>)
+                    }
+                    else{
+                        Getmensage(<p className="text-black">Cliente cadastrado com sucesso!</p>)
+                    }
+
                 } catch (erro) {
                    console.error('Erro ao cadastrar:', erro);
                    Getmensage(<p className="text-black">usuario nao cadastrado!</p>)

@@ -57,8 +57,10 @@ export default function HomePrincipal(){
     useEffect(()=>{
         const startGetClients= async ()=>{
             try {
-                const GetClientsforUser= await axios.get(`https://ankatech.onrender.com/${userId}/${null}`)
+                const GetClientsforUser= await axios.get(`https://ankatech.onrender.com/userclient/${userId}/${null}`)
                 setClients(GetClientsforUser.data[0])
+
+                console.log(GetClientsforUser.data[0])
             } catch (error) {
                 console.warn(error)
             }
@@ -74,8 +76,8 @@ export default function HomePrincipal(){
     return(
         <section>
             <ul className="flex flex-row w-full h-max py-3 px-20 justify-between">
-                {InformValueDayAtivos.map((itens)=>(
-                    <li>
+                {InformValueDayAtivos.map((itens, index)=>(
+                    <li key={index}>
                         <p className="text-[#5d5d5d]">{itens.symbol}:</p>
                         <p className="text-[#f7c41f]">{itens.data.c}</p>
                     </li>
@@ -97,9 +99,11 @@ export default function HomePrincipal(){
                 <div className="w-full lg:w-120 px-4 pt-5 h-max lg:h-[30em] mx-auto">
                     <h3 className="text-[#f7c41f] uppercase text-[1.5em]">Clientes</h3>
                     <ul className="flex flex-col w-full h-40 lg:h-[25em] overflow-auto border-l border-b px-4 rounded-bl-2xl border-black shadow-md gap-3">
-                        {userClients.length !== 0 ? userClients.map((dataclient, index)=>(
-                                    <li key={dataclient?.id} className="grid grid-cols-3 items-center w-full px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]">
-                                        <p className="text-[#5d5d5d]">{dataclient?.nome}</p>
+                        {userClients.length > 0 ? userClients.map((dataclient, index)=>(
+                                    <li key={index} className="flex flex-row items-center justify-around w-full h-14 border border-[#5d5d5d] rounded-[.5rem]">
+                                        <p className="text-[#5d5d5d] w-max">{dataclient?.nome}</p>
+                                        <p className="text-[#888888] w-max">Cliente ankacripto</p>
+                                        <img className="w-5" src="https://i.postimg.cc/fb4wDq0W/grafico-de-crescimento-3.png"/>
                                     </li>                     
                         )) : <div className="w-full h-full flex flex-col justify-center items-center"><p className="text-[#5d5d5d]">sem clientes</p></div>}
                     </ul>

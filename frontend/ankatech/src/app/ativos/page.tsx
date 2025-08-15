@@ -52,8 +52,8 @@ export default function ativosAvailable(){
             <div className="w-full h-108 overflow-auto flex flex-col items-center justify-around gap-6 py-6 border border-[#5d5d5d] rounded-2xl">
                 <h1 className="text-[#5d5d5d] text-4xl">Ativos</h1>
                 <ul className="flex flex-col h-full items-center w-full px-4 lg:px-10 gap-3">
-                    {receiveAssets.map((objectReceive)=>(
-                            <li className="grid grid-cols-5 items-center w-full px-1 lg:px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]" key={objectReceive.id}>
+                    {receiveAssets.length != 0 ? receiveAssets.map((objectReceive, index)=>(
+                            <li className="grid grid-cols-5 items-center w-full px-1 lg:px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]" key={index}>
                                 <p className="text-[#5d5d5d] text-[.8rem]">{objectReceive.nome}</p>
                                 <p className="text-[#5d5d5d] text-[.8rem]">{objectReceive.tipo}</p>
                                 <div className="flex flex-row w-max items-center gap-3">
@@ -63,7 +63,7 @@ export default function ativosAvailable(){
                                 <button className="w-max" onClick={()=> ativoADD(objectReceive.nome, objectReceive.tipo, objectReceive.symble, objectReceive.valor)}><FaPlus color={"#f7c41f"} className="w-max" /></button>
                                 <Link href={`/graphic?namecripto=${objectReceive.symble}&type=${objectReceive.tipo}`}><FaChartLine color={"#f7c41f"} className="w-max" /></Link>
                             </li>
-                    ))}
+                    )) : <img src="https://i.postimg.cc/mr00zrYQ/Fake-3-D-vector-coin-1.gif" />}
                 </ul>
             </div>
             <ListClienADDAtivos item={inforItenADD} />

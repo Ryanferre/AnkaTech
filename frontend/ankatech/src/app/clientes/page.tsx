@@ -186,13 +186,19 @@ const Carteira= ()=>{
     return(
         <section className="px-7">
             <div className="w-full lex flex-col items-center px-4 lg:px-7 py-8 gap-17 border border-[#5d5d5d] rounded-2xl">
+                <ul className="flex flex-row justify-between px-40 border-b-1 mb-5 border-black">
+                    <li><p className="text-[#5d5d5d] w-max">Nome</p></li>
+                    <li><p className="text-[#5d5d5d] w-max">Investimento</p></li>
+                    <li><p className="text-[#5d5d5d] w-max">Valor atual</p></li>
+                    <li><p className="text-[#5d5d5d] w-max">Magem de lucro</p></li>
+                </ul>
                 <ul className="flex flex-col w-full h-[20rem] overflow-scroll py-4 px-3 lg:px-4 border-l border-b rounded-bl-2xl border-black shadow-md gap-3">
                     {AtivosofCliente.length !== 0 ? AtivosofCliente.map((dataclient)=>(
                           <li className="flex flex-row justify-around items-center w-full px-4 h-14 border border-[#5d5d5d] rounded-[.5rem]">
                             <p className="text-[#5d5d5d] w-max">{dataclient.ObUser.nome}</p>
-                            <p className="text-[#5d5d5d] w-max">{dataclient.Total}</p>
-                            <p className="text-[#5d5d5d] w-max">{typeof dataclient.somOfLAstPrice === "number" ? `${dataclient.somOfLAstPrice.toFixed(2)}` : "N/A"}</p>
-                            <p className={`${dataclient.Estatistic > 0 ? "text-green-600" : "text-red-500"} w-max`}>{typeof dataclient.Estatistic === "number" ? `${dataclient.Estatistic.toFixed(2)}%` : "N/A"}</p>
+                            <p className="text-[#5d5d5d] w-max">R$ {dataclient.Total}</p>
+                            <p className="text-[#5d5d5d] w-max">R$ {typeof dataclient.somOfLAstPrice === "number" ? `${dataclient.somOfLAstPrice.toFixed(2)}` : "N/A"}</p>
+                            <p className={`${dataclient.Estatistic > 0 ? "text-green-600" : "text-red-500"} w-max`}>% {typeof dataclient.Estatistic === "number" ? `${dataclient.Estatistic.toFixed(2)}%` : "N/A"}</p>
                           </li>                     
                     )) : <div className="w-full h-full flex flex-col justify-center items-center">
                           <p className="text-[#5d5d5d]">Adicione clientes</p>

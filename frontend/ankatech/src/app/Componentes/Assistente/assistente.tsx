@@ -82,9 +82,9 @@ const Assistent= ({assitenteInfor, assistenteComand, existsButton, dataGraphi, t
         }, [])
 
         useEffect(()=>{
-            console.log(dataGraphi)
-            if(assistenteComand != null && assitenteInfor != null && newDayHome == null){
-                setAssistInfor(`Escreva um texto sobre: ${assitenteInfor.typeName} ${tipeIformation}. Dados: preço mais alto: ${assitenteInfor.priceMax}, mais baixo: ${assitenteInfor?.priceMin}, horário do pico: ${assitenteInfor?.timeMax}, horário da mínima: ${assitenteInfor?.timeMin}.`)
+            console.log(assitenteInfor)
+            if(assistenteComand != null && assitenteInfor?.priceMax !== 0 && newDayHome == null){
+                setAssistInfor(`Escreva um texto sobre: ${assitenteInfor?.typeName} ${tipeIformation}. Dados: preço mais alto: ${assitenteInfor?.priceMax}, mais baixo: ${assitenteInfor?.priceMin}, horário do pico: ${assitenteInfor?.timeMax}, horário da mínima: ${assitenteInfor?.timeMin}.`)
                 setComand(assistenteComand)
             }else{
                 setAssistInfor(newDayHome)
@@ -93,6 +93,7 @@ const Assistent= ({assitenteInfor, assistenteComand, existsButton, dataGraphi, t
             
         }, [assistenteComand, newDayHome, assitenteInfor])
 
+        //funcao para mandar a IA analisar o grafico
         const showAnaliseGraphic= ()=>{
             setAssistInfor(`Você vai analisar os seguintes dados de variação de preço ao longo do tempo: ${JSON.stringify(dataGraphi)}.
                             Identifique claramente se há tendência de alta, queda ou estabilidade com base na progressão dos valores. 

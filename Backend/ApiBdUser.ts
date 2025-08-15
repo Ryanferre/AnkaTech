@@ -2,7 +2,6 @@ import { FastifyRequest} from 'fastify'
 import { FastifyInstance } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import { Prisma } from '@prisma/client';
-import { send } from 'process';
 const prisma = new PrismaClient();
 
 

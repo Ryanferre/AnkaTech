@@ -17,13 +17,13 @@ type PropTypeImport={
 export default function ListClienADDAtivos({item}: PropTypeImport){
     const [userClients, setClients]= useState<dataClientsType []>([])
     const userId = Cookies.get('userId')//resgata o id do cookie
-    const {ModalofListuser, getsHiddenorFlex}= ValuesHook()
+    const {ModalofListuser, getsHiddenorFlex, Getmensage}= ValuesHook()
 
     //pegando clientes referente ao usuario
     useEffect(()=>{
         const startGetClients= async ()=>{
             try {
-                const GetClientsforUser= await axios.get(`http://localhost:4000/userclient/${userId}/null`)
+                const GetClientsforUser= await axios.get(`https://ankatech.onrender.com/userclient/${userId}/null`)
                 setClients(GetClientsforUser.data[0])
                 console.log(GetClientsforUser.data[0])
             } catch (error) {
@@ -38,7 +38,11 @@ export default function ListClienADDAtivos({item}: PropTypeImport){
     const ADDAtivos= (e: number)=>{
         const startpushAtivos= async ()=>{
             try {
-                const PostAtivosOfUser= await axios.post(`http://localhost:4000/adicionarAtivos/${e}`, item)
+                const PostAtivosOfUser= await axios.post(`https://ankatech.onrender.com/adicionarAtivos/${e}`, item)
+
+                if(PostAtivosOfUser.status === 200){
+                    Getmensage([<p className="text-black">Ativo adicionado!</p>])
+                }
             } catch (error) {
                 console.warn(error)
             }
@@ -53,7 +57,7 @@ export default function ListClienADDAtivos({item}: PropTypeImport){
     }
 
     return(
-        <section onClick={noneModal} className={`${ModalofListuser} flex-col w-full h-130 bg-black/50 absolute items-center justify-center`}>
+        <section onClick={noneModal} className={`${ModalofListuser} flex-col w-full h-130 absolute items-center py-5`}>
             <div className="w-90 bg-white h-[20-rem] flex flex-col items-center px-7 py-8 gap-17 border border-[#5d5d5d] rounded-2xl">
                 <ul onClick={(e)=> e.stopPropagation()} className="flex flex-col w-full h-[20rem]">
                     {userClients.length !== 0 ? userClients.map((dataclient)=>(
