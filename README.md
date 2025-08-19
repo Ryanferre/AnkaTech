@@ -53,9 +53,13 @@ Interface simples e interativa para simulação de decisões financeiras.
 
 🔧 Tecnologias Utilizadas
 
-React.js
+Next.js
 
 Node.js
+
+Typescript
+
+Docker
 
 Prisma ORM
 
